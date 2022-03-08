@@ -8,3 +8,8 @@ A Tic-Tac-Toe walking skeleton
 - Install [Elixir](https://elixir-lang.org/install.html#macos)
 
 ## Commands to run application 
+1. mix deps.get
+2. TBD (Skeleton right now)
+
+## Command to run the tests
+- mix test
