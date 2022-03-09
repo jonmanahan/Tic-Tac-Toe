@@ -6,7 +6,7 @@ jobs:
       - image: "cimg/elixir:1.13.3"
     steps:
       - checkout
-      - run: elixir ./lib/tic_tac_toe.ex
+      - run: mix run
   test:
     docker:
       - image: "cimg/elixir:1.13.3"
