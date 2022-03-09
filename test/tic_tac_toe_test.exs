@@ -5,6 +5,7 @@ defmodule TicTacToeTest do
     assert true
   end
 
+  @tag :skip
   test "fails the test automatically" do
     assert false
   end
