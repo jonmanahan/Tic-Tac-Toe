@@ -7,8 +7,8 @@ A Tic-Tac-Toe walking skeleton
 - Install [HomeBrew](https://docs.brew.sh/Installation)
 - Install [Elixir](https://elixir-lang.org/install.html#macos)
 
-## Commands to run application 
-1. TBD (Skeleton right now)
+## Command to run application
+- mix start
 
 ## Command to run the tests
 - mix test
