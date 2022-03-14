@@ -6,18 +6,34 @@ jobs:
       - image: "cimg/elixir:1.13.3"
     steps:
       - checkout
+      - run: mix local.hex --force
+      - run: mix deps.get
       - run: mix run
   test:
     docker:
       - image: "cimg/elixir:1.13.3"
     steps:
       - checkout
+      - run: mix local.hex --force
+      - run: mix deps.get
       - run: mix test
+  credo:
+    docker:
+      - image: "cimg/elixir:1.13.3"
+    steps:
+      - checkout
+      - run: mix local.hex --force
+      - run: mix deps.get
+      - run: mix credo
 
 workflows:
   build_and_test:
     jobs:
-      - build
+      - credo
+      - build:
+          requires:
+            - credo
       - test:
           requires:
+            - credo
             - build
