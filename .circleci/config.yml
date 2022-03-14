@@ -30,10 +30,5 @@ workflows:
   build_and_test:
     jobs:
       - credo
-      - build:
-          requires:
-            - credo
-      - test:
-          requires:
-            - credo
-            - build
+      - build
+      - test
