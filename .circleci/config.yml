@@ -1,32 +1,29 @@
 version: 2.1
 
 jobs:
-  getdeps:
+  build:
     docker:
       - image: "cimg/elixir:1.13.3"
     steps:
       - checkout
+      - run: mix local.hex --force
       - restore_cache:
           key: v2-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
-      - run: mix local.hex --force
-      - run: mix deps.get
+      - restore_cache:
+          key: v2-build-cache-{{ .Branch }}
+      - run: mix do deps.get, compile
       - save_cache:
           key: v2-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
           paths: "deps"
+      - save_cache:
+          key: v2-build-cache-{{ .Branch }}
+          paths: "_build"
       - persist_to_workspace:
           paths:
           - project
           - .mix
           - .hex
           root: ~/
-  build:
-    docker:
-      - image: "cimg/elixir:1.13.3"
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/
-      - run: mix compile
   test:
     docker:
       - image: "cimg/elixir:1.13.3"
@@ -47,13 +44,10 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - getdeps
+      - build
       - credo:
           requires:
-            - getdeps
-      - build:
-          requires:
-            - getdeps
+            - build
       - test:
           requires:
-            - getdeps
+            - build
