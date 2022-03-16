@@ -1,10 +1,16 @@
 defmodule TicTacToe do
   @moduledoc """
-  Documentation for `TicTacToe`.
+  The module that handles the logic and communcation for a Command Line Interface
+  Tic-Tac-Toe game
   """
 
-  @spec welcome_message :: :ok
-  def welcome_message do
-    CommandLine.display("Welcome to Tic-Tac-Toe")
+  @welcome_message "Welcome to Tic-Tac-Toe"
+  @display_empty_board "1 | 2 | 3"
+
+  @spec start(any()) :: :ok
+  def start(writer) do
+    welcome = @welcome_message <> "\n\n" <> @display_empty_board <> "\n"
+
+    writer.display(welcome)
   end
 end
