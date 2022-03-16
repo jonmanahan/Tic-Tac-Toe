@@ -13,3 +13,6 @@ A Tic-Tac-Toe walking skeleton
 
 ## Command to run the tests
 - mix test
+
+## Command to run static type analysis
+- mix dialyzer
