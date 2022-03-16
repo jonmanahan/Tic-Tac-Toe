@@ -7,7 +7,8 @@ defmodule TicTacToe.MixProject do
       version: "0.1.0",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      dialyzer: [plt_add_apps: [:mix]]
     ]
   end
 
@@ -21,7 +22,8 @@ defmodule TicTacToe.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 0.4", only: [:dev], runtime: false}
     ]
   end
 end
