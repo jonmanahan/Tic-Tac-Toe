@@ -10,6 +10,10 @@ defmodule TicTacToeTest do
         Welcome to Tic-Tac-Toe
 
         1 | 2 | 3
+        --|---|--
+        4 | 5 | 6
+        --|---|--
+        7 | 8 | 9
         """
     end
 
@@ -19,6 +23,10 @@ defmodule TicTacToeTest do
         Welcome to Tic-Tac-Toe
 
         1 | 2 | 3
+        --|---|--
+        4 | 5 | 6
+        --|---|--
+        7 | 8 | 9
         """
     end
   end
