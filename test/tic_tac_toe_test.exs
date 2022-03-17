@@ -4,7 +4,7 @@ defmodule TicTacToeTest do
 
 
   describe "start/1" do
-    test "displays welcome message and board" do
+    test "(integration test) displays welcome message and board" do
       assert capture_io(fn -> TicTacToe.start(CommandLine) end) ===
         """
         Welcome to Tic-Tac-Toe
@@ -17,8 +17,8 @@ defmodule TicTacToeTest do
         """
     end
 
-    test "displays welcome message and board using mock" do
-      assert TicTacToe.start(CommandLineMock) ===
+    test "(unit test) displays welcome message and board" do
+      assert TicTacToe.start(WriterMock) ===
         """
         Welcome to Tic-Tac-Toe
 
