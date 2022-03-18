@@ -24,6 +24,8 @@ defmodule TicTacToeTest do
     end
 
     test "(unit test) displays welcome message and board" do
+      start_supervised!(CommunicatorMock)
+
       assert TicTacToe.start(CommunicatorMock) =~
         """
         Welcome to Tic-Tac-Toe
@@ -36,8 +38,9 @@ defmodule TicTacToeTest do
         """
     end
 
+    test "(unit test) displays user input message" do
+      start_supervised!(CommunicatorMock)
 
-    test "(unit test) displays input message" do
       user_input = "1"
       assert TicTacToe.start(CommunicatorMock) =~
         "Please input desired placement: #{user_input}"
