@@ -13,9 +13,10 @@ defmodule TicTacToe do
   """
 
   @spec start(any()) :: :ok
-  def start(writer) do
-    welcome = @welcome_message <> "\n\n" <> @display_empty_board
+  def start(communicator) do
+    welcome = @welcome_message <> "\n\n" <> @display_empty_board <> "\n"
 
-    writer.display(welcome)
+    communicator.display(welcome)
+    communicator.read_input()
   end
 end
