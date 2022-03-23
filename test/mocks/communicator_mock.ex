@@ -36,6 +36,6 @@ defmodule CommunicatorMock do
   def handle_call(:read_input, _from, full_message) do
     user_input = "1"
     full_message = full_message <> "Please input desired placement: #{user_input}"
-    {:reply, full_message, full_message}
+    {:reply, user_input, full_message}
   end
 end
