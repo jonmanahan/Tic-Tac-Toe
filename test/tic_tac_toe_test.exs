@@ -5,7 +5,8 @@ defmodule TicTacToeTest do
 
   describe "start/1" do
     test "(integration test) displays welcome message and board" do
-      assert capture_io(fn -> TicTacToe.start(CommandLine) end) =~
+      user_input = "1"
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLine)) end) =~
         """
         Welcome to Tic-Tac-Toe
 
@@ -17,16 +18,12 @@ defmodule TicTacToeTest do
         """
     end
 
-    test "(integration test) displays input message" do
-      user_input = "1"
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLine)) end) =~
-        "Please input desired placement: #{user_input}"
-    end
-
     test "(unit test) displays welcome message and board" do
       start_supervised!(CommunicatorMock)
 
-      assert TicTacToe.start(CommunicatorMock) =~
+      TicTacToe.start(CommunicatorMock)
+
+      assert :sys.get_state(CommunicatorMockServer) =~
         """
         Welcome to Tic-Tac-Toe
 
@@ -41,8 +38,10 @@ defmodule TicTacToeTest do
     test "(unit test) displays user input message" do
       start_supervised!(CommunicatorMock)
 
+      TicTacToe.start(CommunicatorMock)
       user_input = "1"
-      assert TicTacToe.start(CommunicatorMock) =~
+
+      assert :sys.get_state(CommunicatorMockServer) =~
         "Please input desired placement: #{user_input}"
     end
   end
