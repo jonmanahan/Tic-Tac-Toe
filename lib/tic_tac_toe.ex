@@ -5,13 +5,13 @@ defmodule TicTacToe do
 
   @welcome_message "Welcome to Tic-Tac-Toe"
 
-  @spec start(any()) :: :ok
-  def start(communicator, unformatted_board \\ Board.setup_initial_board()) do
-    welcome = @welcome_message <> "\n" <> Board.format_board_to_display(unformatted_board)
+  @spec start(any(), any()) :: :ok
+  def start(communicator, communicator_formatter, board \\ Board.setup_initial_board()) do
+    welcome = @welcome_message <> "\n" <> communicator_formatter.format_board(board)
     communicator.display(welcome)
 
     player_move = String.trim(communicator.read_input())
-    unformatted_board = Board.update_board(unformatted_board, player_move, "X")
-    communicator.display(Board.format_board_to_display(unformatted_board))
+    board = Board.place_a_symbol(board, player_move, "X")
+    communicator.display(communicator_formatter.format_board(board))
   end
 end

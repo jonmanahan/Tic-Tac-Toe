@@ -2,11 +2,10 @@ defmodule TicTacToeTest do
   use ExUnit.Case
   import ExUnit.CaptureIO
 
-
   describe "start/1" do
     test "(integration test) displays welcome message and board" do
       user_input = "1"
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLine)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLine, CommandLineFormatter)) end) =~
         """
         Welcome to Tic-Tac-Toe
 
@@ -21,7 +20,7 @@ defmodule TicTacToeTest do
     test "(unit test) displays welcome message and board" do
       start_supervised!(CommunicatorMock)
 
-      TicTacToe.start(CommunicatorMock)
+      TicTacToe.start(CommunicatorMock, CommandLineFormatter)
 
       assert :sys.get_state(CommunicatorMockServer) =~
         """
@@ -38,7 +37,7 @@ defmodule TicTacToeTest do
     test "(unit test) displays user input message" do
       start_supervised!(CommunicatorMock)
 
-      TicTacToe.start(CommunicatorMock)
+      TicTacToe.start(CommunicatorMock, CommandLineFormatter)
       user_input = "1"
 
       assert :sys.get_state(CommunicatorMockServer) =~
