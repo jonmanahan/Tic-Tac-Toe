@@ -5,6 +5,6 @@ defmodule Mix.Tasks.Start do
   """
 
   def run(_) do
-    TicTacToe.start(CommandLine)
+    TicTacToe.start(CommandLine, CommandLineFormatter)
   end
 end
