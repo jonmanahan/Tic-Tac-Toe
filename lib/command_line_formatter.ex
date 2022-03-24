@@ -5,7 +5,7 @@ defmodule CommandLineFormatter do
 
   @spec format_board(map()) :: String.t()
   def format_board(board) do
-    board_dimensions = trunc(:math.sqrt(Enum.count(board)))
+    board_dimensions = Board.get_board_dimensions(board)
     board
     |> Map.values()
     |> Enum.chunk_every(board_dimensions)

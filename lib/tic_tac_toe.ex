@@ -13,5 +13,9 @@ defmodule TicTacToe do
     player_move = String.trim(communicator.read_input())
     board = Board.place_a_symbol(board, player_move, "X")
     communicator.display(communicator_formatter.format_board(board))
+
+    if Board.has_player_won(board) do
+      communicator.display("Player X has Won!")
+    end
   end
 end

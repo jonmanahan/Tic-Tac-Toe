@@ -43,5 +43,20 @@ defmodule TicTacToeTest do
       assert :sys.get_state(CommunicatorMockServer) =~
         "Please input desired placement: #{user_input}"
     end
+
+    test "(unit test) displays winning message" do
+      start_supervised!(CommunicatorMock)
+
+      board = %{
+        1 => "1", 2 => "X", 3 => "X",
+        4 => "O", 5 => "5", 6 => "O",
+        7 => "X", 8 => "8", 9 => "O"
+      }
+
+      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board)
+
+      assert :sys.get_state(CommunicatorMockServer) =~
+        "Player X has Won!"
+    end
   end
 end
