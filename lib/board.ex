@@ -13,8 +13,8 @@ defmodule Board do
     Map.replace(board, String.to_integer(player_move), symbol)
   end
 
-  @spec has_player_won(map()) :: boolean()
-  def has_player_won(board) do
+  @spec has_player_won?(map()) :: boolean()
+  def has_player_won?(board) do
     Enum.any?([get_all_rows_status(board), get_all_columns_status(board), get_both_diagonals_status(board)])
   end
 
@@ -29,7 +29,7 @@ defmodule Board do
     board
     |> Map.values()
     |> Enum.chunk_every(board_dimensions)
-    |> Enum.map(fn rows -> Enum.uniq(rows) end)
+    |> Enum.map(&Enum.uniq/1)
     |> Enum.any?(fn win -> Enum.count(win) == 1 end)
   end
 
@@ -51,7 +51,7 @@ defmodule Board do
     |> Map.values()
     |> Enum.chunk_every(board_dimensions)
     |> get_diagonal_values(board_dimensions)
-    |> Enum.map(fn columns -> Enum.uniq(columns) end)
+    |> Enum.map(&Enum.uniq/1)
     |> Enum.any?(fn win -> Enum.count(win) == 1 end)
   end
 
