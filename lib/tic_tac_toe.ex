@@ -15,7 +15,7 @@ defmodule TicTacToe do
     communicator.display(communicator_formatter.format_board(board))
 
     if Board.has_player_won?(board) do
-      communicator.display("Player X has Won!")
+      communicator.display("Player X has Won!\n")
     end
   end
 end
