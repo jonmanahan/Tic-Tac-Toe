@@ -7,6 +7,8 @@ defmodule CommandLineFormatter do
   def format_board(board) do
     board_dimensions = Board.get_board_dimensions(board)
     board
+    |> Enum.map(&format_position/1)
+    |> Map.new()
     |> Map.values()
     |> Enum.chunk_every(board_dimensions)
     |> Enum.map_intersperse(build_separator(board_dimensions), &build_row/1)
@@ -14,6 +16,12 @@ defmodule CommandLineFormatter do
     |> List.insert_at(-1, "\n\n")
     |> Enum.join()
   end
+
+  defp format_position({board_position, :empty}) do
+    {board_position, "#{board_position}"}
+  end
+
+  defp format_position(position), do: position
 
   @spec build_row(List.t()) :: String.t()
   defp build_row(row) do
