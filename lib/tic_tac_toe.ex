@@ -14,8 +14,21 @@ defmodule TicTacToe do
     board = Board.place_a_symbol(board, player_move, "X")
     communicator.display(communicator_formatter.format_board(board))
 
-    if Board.has_player_won?(board) do
-      communicator.display("Player X has Won!\n")
+    board
+    |> get_game_status_message()
+    |> communicator.display()
+  end
+
+  @spec get_game_status_message(map()) :: String.t()
+  defp get_game_status_message(board) do
+    game_status = Board.game_status(board)
+    cond do
+      game_status == :won ->
+        "Player X has Won!\n"
+      game_status == :tied ->
+        "No player has won, tie!\n"
+      true ->
+        ""
     end
   end
 end

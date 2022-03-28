@@ -48,15 +48,30 @@ defmodule TicTacToeTest do
       start_supervised!(CommunicatorMock)
 
       board = %{
-        1 => "1", 2 => "X", 3 => "X",
-        4 => "O", 5 => "5", 6 => "O",
-        7 => "X", 8 => "8", 9 => "O"
+        1 => :empty, 2 => "X", 3 => "X",
+        4 => "O", 5 => :empty, 6 => "O",
+        7 => "X", 8 => :empty, 9 => "O"
       }
 
       TicTacToe.start(CommunicatorMock, CommandLineFormatter, board)
 
       assert :sys.get_state(CommunicatorMockServer) =~
         "Player X has Won!"
+    end
+
+    test "(unit test) displays tie message" do
+      start_supervised!(CommunicatorMock)
+
+      board = %{
+        1 => :empty, 2 => "O", 3 => "X",
+        4 => "O", 5 => "O", 6 => "X",
+        7 => "X", 8 => "X", 9 => "O"
+      }
+
+      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board)
+
+      assert :sys.get_state(CommunicatorMockServer) =~
+        "No player has won, tie!"
     end
   end
 end
