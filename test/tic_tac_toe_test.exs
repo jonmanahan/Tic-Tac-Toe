@@ -18,7 +18,8 @@ defmodule TicTacToeTest do
     end
 
     test "(unit test) displays welcome message and board" do
-      start_supervised!(CommunicatorMock)
+      user_input = ["1"]
+      start_supervised!({CommunicatorMock, user_input})
 
       TicTacToe.start(CommunicatorMock, CommandLineFormatter)
 
@@ -35,17 +36,18 @@ defmodule TicTacToeTest do
     end
 
     test "(unit test) displays user input message" do
-      start_supervised!(CommunicatorMock)
+      user_input = ["1"]
+      start_supervised!({CommunicatorMock, user_input})
 
       TicTacToe.start(CommunicatorMock, CommandLineFormatter)
-      user_input = "1"
 
       assert :sys.get_state(CommunicatorMockServer) =~
         "Please input desired placement: #{user_input}"
     end
 
     test "(unit test) displays winning message" do
-      start_supervised!(CommunicatorMock)
+      user_input = ["1"]
+      start_supervised!({CommunicatorMock, user_input})
 
       board = %{
         1 => :empty, 2 => "X", 3 => "X",
@@ -60,7 +62,8 @@ defmodule TicTacToeTest do
     end
 
     test "(unit test) displays tie message" do
-      start_supervised!(CommunicatorMock)
+      user_input = ["1"]
+      start_supervised!({CommunicatorMock, user_input})
 
       board = %{
         1 => :empty, 2 => "O", 3 => "X",
@@ -72,6 +75,30 @@ defmodule TicTacToeTest do
 
       assert :sys.get_state(CommunicatorMockServer) =~
         "No player has won, tie!"
+    end
+
+    test "(unit test) displays non-numerical validation message via first input, then displays updated board via second" do
+      user_inputs = ["this is not a numerical input", "1"]
+      start_supervised!({CommunicatorMock, user_inputs})
+
+      board = %{
+        1 => :empty, 2 => :empty, 3 => :empty,
+        4 => :empty, 5 => :empty, 6 => :empty,
+        7 => :empty, 8 => :empty, 9 => :empty
+      }
+
+      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board)
+
+      assert :sys.get_state(CommunicatorMockServer) =~
+        "Invalid input, please input a number between 1 and 9\n"
+      assert :sys.get_state(CommunicatorMockServer) =~
+      """
+      X | 2 | 3
+      --|---|--
+      4 | 5 | 6
+      --|---|--
+      7 | 8 | 9
+      """
     end
   end
 end

@@ -26,7 +26,7 @@ defmodule BoardTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      board = Board.place_a_symbol(board, "2", "X")
+      board = Board.place_a_symbol(board, 2, "X")
 
       expected_board = %{
         1 => :empty, 2 => "X", 3 => :empty,

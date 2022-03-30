@@ -8,9 +8,9 @@ defmodule Board do
     Map.new(1..board_dimensions * board_dimensions, fn position -> {position, :empty} end)
   end
 
-  @spec place_a_symbol(map(), String.t(), String.t()) :: map()
+  @spec place_a_symbol(map(), non_neg_integer(), String.t()) :: map()
   def place_a_symbol(board, player_move, symbol) do
-    Map.replace(board, String.to_integer(player_move), symbol)
+    Map.replace(board, player_move, symbol)
   end
 
   @spec game_status(map()) :: atom()
