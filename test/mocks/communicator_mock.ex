@@ -17,12 +17,13 @@ defmodule CommunicatorMock do
     GenServer.call(CommunicatorMockServer, :read_input)
   end
 
-  def start_link(_arg) do
-    GenServer.start_link(__MODULE__, "", name: CommunicatorMockServer)
+  def start_link(user_inputs) do
+    GenServer.start_link(__MODULE__, {"", user_inputs}, name: CommunicatorMockServer)
   end
 
   @impl true
-  def init(full_message) do
+  def init({full_message, user_inputs}) do
+    Process.put(:mock_user_inputs, user_inputs)
     {:ok, full_message}
   end
 
@@ -34,7 +35,8 @@ defmodule CommunicatorMock do
 
   @impl true
   def handle_call(:read_input, _from, full_message) do
-    user_input = "1"
+    [user_input | remaining_user_inputs] = Process.get(:mock_user_inputs)
+    Process.put(:mock_user_inputs, remaining_user_inputs)
     full_message = full_message <> "Please input desired placement: #{user_input}"
     {:reply, user_input, full_message}
   end
