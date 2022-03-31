@@ -100,5 +100,29 @@ defmodule TicTacToeTest do
       7 | 8 | 9
       """
     end
+
+    test "(unit test) displays out of bounds validation message via first input, then displays updated board via second" do
+      user_inputs = ["12", "1"]
+      start_supervised!({CommunicatorMock, user_inputs})
+
+      board = %{
+        1 => :empty, 2 => :empty, 3 => :empty,
+        4 => :empty, 5 => :empty, 6 => :empty,
+        7 => :empty, 8 => :empty, 9 => :empty
+      }
+
+      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board)
+
+      assert :sys.get_state(CommunicatorMockServer) =~
+        "Invalid input, number out of bounds\n"
+      assert :sys.get_state(CommunicatorMockServer) =~
+      """
+      X | 2 | 3
+      --|---|--
+      4 | 5 | 6
+      --|---|--
+      7 | 8 | 9
+      """
+    end
   end
 end

@@ -11,7 +11,7 @@ defmodule TicTacToe do
     communicator.display(welcome)
 
     player_input = String.trim(communicator.read_input())
-    case Validator.validate(player_input) do
+    case Validator.validate(board, player_input) do
       {:ok, player_move} ->
         board = Board.place_a_symbol(board, player_move, "X")
         communicator.display(communicator_formatter.format_board(board))
@@ -19,8 +19,8 @@ defmodule TicTacToe do
         board
         |> get_game_status_message()
         |> communicator.display()
-      {:error, _} ->
-        communicator.display("Invalid input, please input a number between 1 and 9\n")
+      {:invalid, invalid_input_status} ->
+        communicator.display(get_invalid_input_message(invalid_input_status))
         start(communicator, communicator_formatter, board)
     end
   end
@@ -31,6 +31,14 @@ defmodule TicTacToe do
       :won -> "Player X has Won!\n"
       :tied -> "No player has won, tie!\n"
       _ -> ""
+    end
+  end
+
+  @spec get_invalid_input_message(atom()) :: String.t()
+  defp get_invalid_input_message(invalid_move_status) do
+    case invalid_move_status do
+      :non_numerical -> "Invalid input, please input a number between 1 and 9\n"
+      :out_of_bounds -> "Invalid input, number out of bounds\n"
     end
   end
 end

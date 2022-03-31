@@ -22,6 +22,20 @@ defmodule Board do
     end
   end
 
+  @spec move_status(map(), integer()) :: atom()
+  def move_status(board, player_move) do
+    if is_out_of_bounds?(board, player_move) do
+      :out_of_bounds
+    else
+      :valid
+    end
+  end
+
+  @spec is_out_of_bounds?(map(), integer()) :: boolean()
+  defp is_out_of_bounds?(board, player_move) do
+    player_move not in 1..Enum.count(board)
+  end
+
   @spec has_player_won?(map()) :: boolean()
   defp has_player_won?(board) do
     Enum.any?([get_all_rows_status(board), get_all_columns_status(board), get_both_diagonals_status(board)])
