@@ -124,4 +124,53 @@ defmodule BoardTest do
       assert Board.game_status(board) == :tied
     end
   end
+
+  describe "move_status/1" do
+    test "indicates the move is out of bounds (upper bounds)" do
+      user_input = 12
+
+      board = %{
+        1 => :empty, 2 => :empty, 3 => :empty,
+        4 => :empty, 5 => :empty, 6 => :empty,
+        7 => :empty, 8 => :empty, 9 => :empty
+      }
+
+      assert Board.move_status(board, user_input) == :out_of_bounds
+    end
+
+    test "indicates the move is out of bounds (lower bounds)" do
+      user_input = 0
+
+      board = %{
+        1 => :empty, 2 => :empty, 3 => :empty,
+        4 => :empty, 5 => :empty, 6 => :empty,
+        7 => :empty, 8 => :empty, 9 => :empty
+      }
+
+      assert Board.move_status(board, user_input) == :out_of_bounds
+    end
+
+    test "indicates the move is out of bounds on a 2x2 board" do
+      user_input = 5
+
+      board = %{
+        1 => :empty, 2 => :empty,
+        3 => :empty, 4 => :empty
+      }
+
+      assert Board.move_status(board, user_input) == :out_of_bounds
+    end
+
+    test "indicates the move is valid" do
+      user_input = 4
+
+      board = %{
+        1 => :empty, 2 => :empty, 3 => :empty,
+        4 => :empty, 5 => :empty, 6 => :empty,
+        7 => :empty, 8 => :empty, 9 => :empty
+      }
+
+      assert Board.move_status(board, user_input) == :valid
+    end
+  end
 end
