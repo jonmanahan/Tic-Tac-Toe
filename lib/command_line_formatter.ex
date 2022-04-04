@@ -5,7 +5,7 @@ defmodule CommandLineFormatter do
 
   @spec format_board(map()) :: String.t()
   def format_board(board) do
-    board_dimensions = Board.get_board_dimensions(board)
+    board_dimensions = Board.board_dimensions(board)
     board
     |> Enum.map(&format_position/1)
     |> Map.new()
@@ -23,7 +23,7 @@ defmodule CommandLineFormatter do
 
   defp format_position(position), do: position
 
-  @spec build_row(List.t()) :: String.t()
+  @spec build_row(list()) :: String.t()
   defp build_row(row) do
     Enum.join(row, " | ")
   end

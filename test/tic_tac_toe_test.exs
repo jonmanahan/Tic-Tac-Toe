@@ -124,5 +124,30 @@ defmodule TicTacToeTest do
       7 | 8 | 9
       """
     end
+
+    test "(unit test) displays space taken validation message via first input, then displays updated board via second" do
+      user_inputs = ["2", "1"]
+      start_supervised!({CommunicatorMock, user_inputs})
+
+      board = %{
+        1 => :empty, 2 => "X", 3 => :empty,
+        4 => :empty, 5 => :empty, 6 => :empty,
+        7 => :empty, 8 => :empty, 9 => :empty
+      }
+
+      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board)
+
+      assert :sys.get_state(CommunicatorMockServer) =~
+        "Invalid input, position has already been taken\n"
+      assert :sys.get_state(CommunicatorMockServer) =~
+      """
+      X | X | 3
+      --|---|--
+      4 | 5 | 6
+      --|---|--
+      7 | 8 | 9
+      """
+    end
+
   end
 end
