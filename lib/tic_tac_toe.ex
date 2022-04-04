@@ -17,28 +17,14 @@ defmodule TicTacToe do
         communicator.display(communicator_formatter.format_board(board))
 
         board
-        |> get_game_status_message()
+        |> Message.game_status()
         |> communicator.display()
       {:invalid, invalid_input_status} ->
-        communicator.display(get_invalid_input_message(invalid_input_status))
+        invalid_input_status
+        |> Message.invalid_input()
+        |> communicator.display()
+
         start(communicator, communicator_formatter, board)
-    end
-  end
-
-  @spec get_game_status_message(map()) :: String.t()
-  defp get_game_status_message(board) do
-    case Board.game_status(board) do
-      :won -> "Player X has Won!\n"
-      :tied -> "No player has won, tie!\n"
-      _ -> ""
-    end
-  end
-
-  @spec get_invalid_input_message(atom()) :: String.t()
-  defp get_invalid_input_message(invalid_move_status) do
-    case invalid_move_status do
-      :non_numerical -> "Invalid input, please input a number between 1 and 9\n"
-      :out_of_bounds -> "Invalid input, number out of bounds\n"
     end
   end
 end

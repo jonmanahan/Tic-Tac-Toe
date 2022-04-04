@@ -38,7 +38,7 @@ defmodule BoardTest do
     end
   end
 
-  describe "get_board_dimensions/1" do
+  describe "board_dimensions/1" do
     test "gets the dimensions of the board given a board of length 9" do
       board = %{
         1 => :empty, 2 => :empty, 3 => :empty,
@@ -46,7 +46,7 @@ defmodule BoardTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      board_dimensions = Board.get_board_dimensions(board)
+      board_dimensions = Board.board_dimensions(board)
 
       assert board_dimensions == 3
     end
@@ -57,7 +57,7 @@ defmodule BoardTest do
         3 => :empty, 4 => :empty
       }
 
-      board_dimensions = Board.get_board_dimensions(board)
+      board_dimensions = Board.board_dimensions(board)
 
       assert board_dimensions == 2
     end
@@ -159,6 +159,18 @@ defmodule BoardTest do
       }
 
       assert Board.move_status(board, user_input) == :out_of_bounds
+    end
+
+    test "indicated the space is already taken" do
+      user_input = 2
+
+      board = %{
+        1 => :empty, 2 => "X", 3 => :empty,
+        4 => :empty, 5 => :empty, 6 => :empty,
+        7 => :empty, 8 => :empty, 9 => :empty
+      }
+
+      assert Board.move_status(board, user_input) == :space_taken
     end
 
     test "indicates the move is valid" do

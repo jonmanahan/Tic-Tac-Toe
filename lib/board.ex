@@ -24,11 +24,16 @@ defmodule Board do
 
   @spec move_status(map(), integer()) :: atom()
   def move_status(board, player_move) do
-    if is_out_of_bounds?(board, player_move) do
-      :out_of_bounds
-    else
-      :valid
+    cond do
+      is_out_of_bounds?(board, player_move) -> :out_of_bounds
+      is_space_taken?(board, player_move) -> :space_taken
+      true -> :valid
     end
+  end
+
+  @spec is_space_taken?(map(), integer()) :: boolean()
+  defp is_space_taken?(board, player_move) do
+    Map.fetch!(board, player_move) != :empty
   end
 
   @spec is_out_of_bounds?(map(), integer()) :: boolean()
@@ -38,7 +43,7 @@ defmodule Board do
 
   @spec has_player_won?(map()) :: boolean()
   defp has_player_won?(board) do
-    Enum.any?([get_all_rows_status(board), get_all_columns_status(board), get_both_diagonals_status(board)])
+    Enum.any?([win_by_rows?(board), win_by_columns?(board), win_by_diagonals?(board)])
   end
 
   @spec is_board_full?(map) :: boolean
@@ -46,14 +51,14 @@ defmodule Board do
     !Enum.member?(Map.values(board), :empty)
   end
 
-  @spec get_board_dimensions(map()) :: integer()
-  def get_board_dimensions(board) do
+  @spec board_dimensions(map()) :: integer()
+  def board_dimensions(board) do
     trunc(:math.sqrt(Enum.count(board)))
   end
 
-  @spec get_all_rows_status(map()) :: boolean()
-  defp get_all_rows_status(board) do
-    board_dimensions = get_board_dimensions(board)
+  @spec win_by_rows?(map()) :: boolean()
+  defp win_by_rows?(board) do
+    board_dimensions = board_dimensions(board)
     board
     |> Map.values()
     |> Enum.chunk_every(board_dimensions)
@@ -61,9 +66,9 @@ defmodule Board do
     |> Enum.any?(&is_winning_vector?/1)
   end
 
-  @spec get_all_columns_status(map()) :: boolean()
-  defp get_all_columns_status(board) do
-    board_dimensions = get_board_dimensions(board)
+  @spec win_by_columns?(map()) :: boolean()
+  defp win_by_columns?(board) do
+    board_dimensions = board_dimensions(board)
     board
     |> Map.values()
     |> Enum.chunk_every(board_dimensions)
@@ -72,19 +77,19 @@ defmodule Board do
     |> Enum.any?(&is_winning_vector?/1)
   end
 
-  @spec get_both_diagonals_status(map()) :: boolean()
-  defp get_both_diagonals_status(board) do
-    board_dimensions = get_board_dimensions(board)
+  @spec win_by_diagonals?(map()) :: boolean()
+  defp win_by_diagonals?(board) do
+    board_dimensions = board_dimensions(board)
     board
     |> Map.values()
     |> Enum.chunk_every(board_dimensions)
-    |> get_diagonal_values(board_dimensions)
+    |> diagonal_values(board_dimensions)
     |> Enum.map(&Enum.uniq/1)
     |> Enum.any?(&is_winning_vector?/1)
   end
 
-  @spec get_diagonal_values(list(), integer()) :: list()
-  defp get_diagonal_values(board, board_dimensions) do
+  @spec diagonal_values(list(), integer()) :: list()
+  defp diagonal_values(board, board_dimensions) do
     forward_diagonal = for diagonal_index <- 0..board_dimensions - 1, do: Enum.at(Enum.at(board, diagonal_index), diagonal_index)
     backward_diagonal = for diagonal_index <- 0..board_dimensions - 1, do: Enum.at(Enum.at(board, diagonal_index), (board_dimensions - 1) - diagonal_index)
     [forward_diagonal, backward_diagonal]
