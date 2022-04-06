@@ -56,6 +56,18 @@ defmodule Board do
     trunc(:math.sqrt(Enum.count(board)))
   end
 
+  @spec calculate_turn(map()) :: String.t()
+  def calculate_turn(board) do
+    board_values = Map.values(board)
+    x_count = Enum.count(board_values, fn symbol -> symbol == "X" end)
+    o_count = Enum.count(board_values, fn symbol -> symbol == "O" end)
+    if x_count == o_count do
+      "X"
+    else
+      "O"
+    end
+  end
+
   @spec win_by_rows?(map()) :: boolean()
   defp win_by_rows?(board) do
     board_dimensions = board_dimensions(board)

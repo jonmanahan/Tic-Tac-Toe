@@ -3,10 +3,10 @@ defmodule Message do
   The module that handles the messages that correspond to a given status for a Tic-Tac-Toe game
   """
 
-  @spec game_status(map()) :: String.t()
-  def game_status(board) do
+  @spec game_status(map(), String.t()) :: String.t()
+  def game_status(board, player_symbol) do
     case Board.game_status(board) do
-      :won -> "Player X has Won!\n"
+      :won -> "Player #{player_symbol} has Won!\n"
       :tied -> "No player has won, tie!\n"
       _ -> ""
     end

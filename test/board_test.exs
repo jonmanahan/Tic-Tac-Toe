@@ -185,4 +185,46 @@ defmodule BoardTest do
       assert Board.move_status(board, user_input) == :valid
     end
   end
+
+  describe "calculate_turn/1" do
+    test "determines the first move is X's turn given an empty board" do
+      board = %{
+        1 => :empty, 2 => :empty, 3 => :empty,
+        4 => :empty, 5 => :empty, 6 => :empty,
+        7 => :empty, 8 => :empty, 9 => :empty
+      }
+
+      assert Board.calculate_turn(board) == "X"
+    end
+
+    test "determines the second move is O’s turn given a board with one X" do
+      board = %{
+        1 => "X", 2 => :empty, 3 => :empty,
+        4 => :empty, 5 => :empty, 6 => :empty,
+        7 => :empty, 8 => :empty, 9 => :empty
+      }
+
+      assert Board.calculate_turn(board) == "O"
+    end
+
+    test "determines its X's turn when there are the same number of X's and O'x on the board" do
+      board = %{
+        1 => "X", 2 => :empty, 3 => "O",
+        4 => "O", 5 => :empty, 6 => "O",
+        7 => "X", 8 => :empty, 9 => "X"
+      }
+
+      assert Board.calculate_turn(board) == "X"
+    end
+
+    test "determines its O's turn when there are the not same number of X's and O'x on the board" do
+      board = %{
+        1 => "O", 2 => :empty, 3 => "O",
+        4 => "X", 5 => :empty, 6 => "X",
+        7 => "X", 8 => "X", 9 => "O"
+      }
+
+      assert Board.calculate_turn(board) == "O"
+    end
+  end
 end
