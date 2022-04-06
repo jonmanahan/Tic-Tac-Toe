@@ -3,33 +3,51 @@ defmodule MessageTest do
 
   describe "game_status/1" do
     test "returns a tie message when noone has won and the board is full" do
+      player_symbol = "X"
+
       board = %{
         1 => "O", 2 => "X", 3 => "X",
         4 => "X", 5 => "O", 6 => "O",
         7 => "O", 8 => "X", 9 => "X"
       }
 
-      assert Message.game_status(board) == "No player has won, tie!\n"
+      assert Message.game_status(board, player_symbol) == "No player has won, tie!\n"
     end
 
-    test "returns an X is the winner message when three in a row is achieved" do
+    test "returns an X is the winner message when three X's in a row is achieved" do
+      player_symbol = "X"
+
       board = %{
         1 => "O", 2 => :empty, 3 => "X",
         4 => "X", 5 => "X", 6 => "X",
         7 => "O", 8 => :empty, 9 => "O"
       }
 
-      assert Message.game_status(board) == "Player X has Won!\n"
+      assert Message.game_status(board, player_symbol) == "Player #{player_symbol} has Won!\n"
+    end
+
+    test "returns an O is the winner message when three O's in a row is achieved" do
+      player_symbol = "O"
+
+      board = %{
+        1 => "O", 2 => "X", 3 => "X",
+        4 => "X", 5 => :empty, 6 => "X",
+        7 => "O", 8 => "O", 9 => "O"
+      }
+
+      assert Message.game_status(board, player_symbol) == "Player #{player_symbol} has Won!\n"
     end
 
     test "returns an empty message when the game is still in progress" do
+      player_symbol = "O"
+
       board = %{
         1 => "O", 2 => :empty, 3 => "X",
         4 => "X", 5 => :empty, 6 => "X",
         7 => "O", 8 => :empty, 9 => "O"
       }
 
-      assert Message.game_status(board) == ""
+      assert Message.game_status(board, player_symbol) == ""
     end
   end
 
