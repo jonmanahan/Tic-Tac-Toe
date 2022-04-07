@@ -16,3 +16,6 @@ A Tic-Tac-Toe walking skeleton
 
 ## Command to run static type analysis
 - mix dialyzer
+
+## Command to run static code analysis
+- mix credo
