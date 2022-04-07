@@ -4,16 +4,28 @@ jobs:
   build:
     docker:
       - image: "cimg/elixir:1.13.3"
+    parameters:
+      elixir_version:
+        default: "1.13.3"
+        type: string
+      otp_version:
+        default: "24.2"
+        type: string
     steps:
       - checkout
       - run: mix local.hex --force
       - restore_cache:
           key: v2-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
       - restore_cache:
+          key: vv2-plt-cache-<< parameters.elixir_version >>-<< parameters.otp_version >>-{{ checksum "mix.lock" }}
+      - restore_cache:
           key: v2-build-cache-{{ .Branch }}
-      - run: mix do deps.get, compile
+      - run: mix do deps.get, dialyzer --plt, compile
       - save_cache:
           key: v2-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
+          paths: "deps"
+      - save_cache:
+          key: v2-plt-cache-<< parameters.elixir_version >>-<< parameters.otp_version >>-{{ checksum "mix.lock" }}
           paths: "deps"
       - save_cache:
           key: v2-build-cache-{{ .Branch }}
@@ -40,6 +52,14 @@ jobs:
       - attach_workspace:
           at: ~/
       - run: mix credo
+  dialyzer:
+    docker:
+      - image: "cimg/elixir:1.13.3"
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/
+      - run: mix dialyzer
 
 workflows:
   build_and_test:
@@ -49,5 +69,8 @@ workflows:
           requires:
             - build
       - test:
+          requires:
+            - build
+      - dialyzer:
           requires:
             - build
