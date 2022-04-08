@@ -59,7 +59,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/
-      - run: mix dialyzer
+      - run: mix dialyzer --halt-exit-status
 
 workflows:
   build_and_test:
