@@ -1,6 +1,8 @@
 defmodule MessageTest do
   use ExUnit.Case
 
+  alias Game.Message
+
   describe "game_status/1" do
     test "returns a tie message when noone has won and the board is full" do
       player_symbol = "X"

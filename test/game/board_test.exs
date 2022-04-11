@@ -1,6 +1,8 @@
 defmodule BoardTest do
   use ExUnit.Case
 
+  alias Game.Board
+
   describe "setup_initial_board/1" do
     test "populates initial board with defaulted dimensions of 3, board length of 9" do
       assert Board.setup_initial_board() == %{

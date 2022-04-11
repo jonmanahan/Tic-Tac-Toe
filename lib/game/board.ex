@@ -1,4 +1,4 @@
-defmodule Board do
+defmodule Game.Board do
   @moduledoc """
   The module that handles the Board logic for a Tic-Tac-Toe game
   """

@@ -1,6 +1,8 @@
 defmodule ValidatorTest do
   use ExUnit.Case
 
+  alias Game.Validator
+
   describe "validate/1" do
     test "returns an invalid error paired with the reason when the user enters a non numerical string" do
       user_input = "not a number"
