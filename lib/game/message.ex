@@ -1,7 +1,9 @@
-defmodule Message do
+defmodule Game.Message do
   @moduledoc """
   The module that handles the messages that correspond to a given status for a Tic-Tac-Toe game
   """
+
+  alias Game.Board
 
   @spec game_status(map(), String.t()) :: String.t()
   def game_status(board, player_symbol) do

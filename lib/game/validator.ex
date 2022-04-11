@@ -1,7 +1,9 @@
-defmodule Validator do
+defmodule Game.Validator do
   @moduledoc """
   The module that handles checking to see if the user input is numerical for a Tic-Tac-Toe game
   """
+
+  alias Game.Board
 
   @type message :: :non_numerical | :out_of_bounds | :space_taken
 

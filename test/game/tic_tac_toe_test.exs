@@ -1,6 +1,7 @@
 defmodule TicTacToeTest do
   use ExUnit.Case
 
+  alias Game.TicTacToe
   alias Communication.CommandLine.CommandLineFormatter
 
   describe "start/1" do

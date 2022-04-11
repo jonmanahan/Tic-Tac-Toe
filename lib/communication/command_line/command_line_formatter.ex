@@ -3,6 +3,8 @@ defmodule Communication.CommandLine.CommandLineFormatter do
   The module that handles formatting a board to be displayed to the Command Line
   """
 
+  alias Game.Board
+
   @spec format_board(map()) :: String.t()
   def format_board(board) do
     board_dimensions = Board.board_dimensions(board)

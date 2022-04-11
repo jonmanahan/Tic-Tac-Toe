@@ -1,7 +1,11 @@
-defmodule TicTacToe do
+defmodule Game.TicTacToe do
   @moduledoc """
   The module that handles the logic and communication for a Tic-Tac-Toe game
   """
+
+  alias Game.Board
+  alias Game.Message
+  alias Game.Validator
 
   @welcome_message "Welcome to Tic-Tac-Toe"
 

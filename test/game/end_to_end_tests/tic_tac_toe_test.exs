@@ -2,6 +2,7 @@ defmodule TicTacToeEndToEndTest do
   use ExUnit.Case
   import ExUnit.CaptureIO
 
+  alias Game.TicTacToe
   alias Communication.CommandLine.CommandLineFormatter
   alias Communication.CommandLine.CommandLineCommunicator
 

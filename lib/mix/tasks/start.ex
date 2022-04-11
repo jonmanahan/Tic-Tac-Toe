@@ -4,6 +4,7 @@ defmodule Mix.Tasks.Start do
   Documentation for `MixTasksStart`.
   """
 
+  alias Game.TicTacToe
   alias Communication.CommandLine.CommandLineFormatter
   alias Communication.CommandLine.CommandLineCommunicator
 
