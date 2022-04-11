@@ -1,6 +1,8 @@
 defmodule CommandLineFormatterTest do
   use ExUnit.Case
 
+  alias Communication.CommandLine.CommandLineFormatter
+
   describe "format_board/1" do
     test "converts the board into a CommandLine display friendly format" do
       board = %{

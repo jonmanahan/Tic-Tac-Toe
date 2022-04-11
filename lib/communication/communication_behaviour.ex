@@ -1,4 +1,4 @@
-defmodule CommunicationBehaviour do
+defmodule Communication.CommunicationBehaviour do
   @moduledoc """
   The module that defines a generic display function
   """

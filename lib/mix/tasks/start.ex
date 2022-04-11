@@ -4,7 +4,10 @@ defmodule Mix.Tasks.Start do
   Documentation for `MixTasksStart`.
   """
 
+  alias Communication.CommandLine.CommandLineFormatter
+  alias Communication.CommandLine.CommandLineCommunicator
+
   def run(_) do
-    TicTacToe.start(CommandLine, CommandLineFormatter)
+    TicTacToe.start(CommandLineCommunicator, CommandLineFormatter)
   end
 end

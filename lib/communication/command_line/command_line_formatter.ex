@@ -1,4 +1,4 @@
-defmodule CommandLineFormatter do
+defmodule Communication.CommandLine.CommandLineFormatter do
   @moduledoc """
   The module that handles formatting a board to be displayed to the Command Line
   """

@@ -2,11 +2,14 @@ defmodule TicTacToeEndToEndTest do
   use ExUnit.Case
   import ExUnit.CaptureIO
 
+  alias Communication.CommandLine.CommandLineFormatter
+  alias Communication.CommandLine.CommandLineCommunicator
+
   describe "start/1" do
     test "displays the starting board and the end board with a winning message for X given corresponding inputs" do
       user_input = [input: "1\n2\n3\n4\n5\n6\n7\n"]
 
-      game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLine, CommandLineFormatter)) end)
+      game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter)) end)
 
       assert game_play =~
         """
@@ -34,7 +37,7 @@ defmodule TicTacToeEndToEndTest do
     test "displays the end board with a winning message for O given a fresh start and corresponding inputs" do
       user_input = [input: "1\n2\n3\n5\n6\n8\n"]
 
-      game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLine, CommandLineFormatter)) end)
+      game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter)) end)
 
       assert game_play =~
         """
@@ -62,7 +65,7 @@ defmodule TicTacToeEndToEndTest do
     test "displays the end board with a tied message given a fresh start and corresponding inputs" do
       user_input = [input: "1\n2\n3\n4\n6\n5\n7\n9\n8\n"]
 
-      game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLine, CommandLineFormatter)) end)
+      game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter)) end)
 
       assert game_play =~
         """
