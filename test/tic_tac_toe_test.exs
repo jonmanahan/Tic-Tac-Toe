@@ -1,6 +1,8 @@
 defmodule TicTacToeTest do
   use ExUnit.Case
 
+  alias Communication.CommandLine.CommandLineFormatter
+
   describe "start/1" do
     test "displays welcome message and board when start is first called" do
       user_input = ["1"]

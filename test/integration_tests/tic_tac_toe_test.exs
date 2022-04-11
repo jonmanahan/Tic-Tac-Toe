@@ -2,6 +2,9 @@ defmodule TicTacToeIntegrationTest do
   use ExUnit.Case
   import ExUnit.CaptureIO
 
+  alias Communication.CommandLine.CommandLineFormatter
+  alias Communication.CommandLine.CommandLineCommunicator
+
   describe "start/1" do
     test "displays welcome message and board when first called" do
       user_input = "1"
@@ -12,7 +15,7 @@ defmodule TicTacToeIntegrationTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLine, CommandLineFormatter, board)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board)) end) =~
         """
         Welcome to Tic-Tac-Toe
 
@@ -33,7 +36,7 @@ defmodule TicTacToeIntegrationTest do
         7 => :empty, 8 => "X", 9 => :empty
       }
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLine, CommandLineFormatter, board)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board)) end) =~
         """
         1 | X | X
         --|---|--
@@ -52,7 +55,7 @@ defmodule TicTacToeIntegrationTest do
         7 => :empty, 8 => "O", 9 => :empty
       }
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLine, CommandLineFormatter, board)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board)) end) =~
         "Invalid input, please input a number between 1 and 9"
     end
 
@@ -65,7 +68,7 @@ defmodule TicTacToeIntegrationTest do
         7 => "O", 8 => "O", 9 => "X"
       }
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLine, CommandLineFormatter, board)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board)) end) =~
         "No player has won, tie!\n"
     end
 
@@ -78,7 +81,7 @@ defmodule TicTacToeIntegrationTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLine, CommandLineFormatter, board)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board)) end) =~
         """
         1 | 2 | O
         --|---|--

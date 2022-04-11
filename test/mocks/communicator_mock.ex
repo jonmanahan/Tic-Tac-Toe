@@ -5,6 +5,7 @@ defmodule CommunicatorMock do
   """
   use GenServer
 
+  alias Communication.CommunicationBehaviour
   @behaviour CommunicationBehaviour
 
   @impl true
