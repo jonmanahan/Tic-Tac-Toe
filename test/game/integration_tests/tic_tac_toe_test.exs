@@ -90,14 +90,14 @@ defmodule TicTacToeIntegrationTest do
         --|---|--
         7 | 8 | 9
 
-        Player X, Please input desired placement:\s
+        Player X, please make desired move:\s
         1 | X | O
         --|---|--
         X | O | X
         --|---|--
         7 | 8 | 9
 
-        Player O, Please input desired placement:\s
+        Player O, please make desired move:\s
         """
     end
   end
