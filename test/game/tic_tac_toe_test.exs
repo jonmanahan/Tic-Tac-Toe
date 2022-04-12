@@ -42,7 +42,7 @@ defmodule TicTacToeTest do
       TicTacToe.start(CommunicatorMock, CommandLineFormatter, board)
 
       assert :sys.get_state(CommunicatorMockServer) =~
-        "Player X, Please input desired placement: #{user_input}"
+        "Player X, please make desired move: #{user_input}"
     end
 
     test "displays user input message when O's turn" do
@@ -58,7 +58,7 @@ defmodule TicTacToeTest do
       TicTacToe.start(CommunicatorMock, CommandLineFormatter, board)
 
       assert :sys.get_state(CommunicatorMockServer) =~
-        "Player O, Please input desired placement: #{user_input}"
+        "Player O, please make desired move: #{user_input}"
     end
 
     test "displays X's winning message" do

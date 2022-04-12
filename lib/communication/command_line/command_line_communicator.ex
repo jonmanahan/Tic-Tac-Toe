@@ -11,6 +11,6 @@ defmodule Communication.CommandLine.CommandLineCommunicator do
   end
 
   def read_input() do
-    IO.gets("Please input desired placement: ")
+    IO.gets("please make desired move: ")
   end
 end

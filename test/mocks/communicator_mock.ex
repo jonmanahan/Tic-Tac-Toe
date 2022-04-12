@@ -38,7 +38,7 @@ defmodule CommunicatorMock do
   def handle_call(:read_input, _from, full_message) do
     [user_input | remaining_user_inputs] = Process.get(:mock_user_inputs)
     Process.put(:mock_user_inputs, remaining_user_inputs)
-    full_message = full_message <> "Please input desired placement: #{user_input}"
+    full_message = full_message <> "please make desired move: #{user_input}"
     {:reply, user_input, full_message}
   end
 end

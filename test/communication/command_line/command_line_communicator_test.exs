@@ -15,7 +15,7 @@ defmodule CommandLineCommunicatorTest do
     test "reads message" do
       user_input_message = "1"
       assert capture_io(user_input_message, fn -> IO.write(CommandLineCommunicator.read_input()) end) ===
-        "Please input desired placement: #{user_input_message}"
+        "please make desired move: #{user_input_message}"
     end
   end
 end
