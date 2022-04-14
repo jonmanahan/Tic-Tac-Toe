@@ -1,6 +1,6 @@
 defmodule Communication.CommandLine.CommandLineCommunicator do
   @moduledoc """
-  The module that handles displaying a message to the Command Line
+  The module that handles displaying a message to and reading from the Command Line
   """
 
   alias Communication.CommunicationBehaviour
