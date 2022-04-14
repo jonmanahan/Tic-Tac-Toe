@@ -1,8 +1,10 @@
 defmodule TicTacToeEndToEndTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   import ExUnit.CaptureIO
 
   alias Game.TicTacToe
+  alias Game.Player.HumanPlayer
+  alias Game.Player.EasyComputerPlayer
   alias Communication.CommandLine.CommandLineFormatter
   alias Communication.CommandLine.CommandLineCommunicator
 
@@ -10,7 +12,9 @@ defmodule TicTacToeEndToEndTest do
     test "displays the starting board and the end board with a winning message for X given corresponding inputs" do
       user_input = [input: "1\n2\n3\n4\n5\n6\n7\n"]
 
-      game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter)) end)
+      players = %{"X" => HumanPlayer, "O" => HumanPlayer}
+
+      game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, players)) end)
 
       assert game_play =~
         """
@@ -38,7 +42,9 @@ defmodule TicTacToeEndToEndTest do
     test "displays the end board with a winning message for O given a fresh start and corresponding inputs" do
       user_input = [input: "1\n2\n3\n5\n6\n8\n"]
 
-      game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter)) end)
+      players = %{"X" => HumanPlayer, "O" => HumanPlayer}
+
+      game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, players)) end)
 
       assert game_play =~
         """
@@ -66,7 +72,9 @@ defmodule TicTacToeEndToEndTest do
     test "displays the end board with a tied message given a fresh start and corresponding inputs" do
       user_input = [input: "1\n2\n3\n4\n6\n5\n7\n9\n8\n"]
 
-      game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter)) end)
+      players = %{"X" => HumanPlayer, "O" => HumanPlayer}
+
+      game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, players)) end)
 
       assert game_play =~
         """
@@ -88,6 +96,36 @@ defmodule TicTacToeEndToEndTest do
         X | X | O
 
         No player has won, tie!
+        """
+    end
+
+    test "displays the end board with a winning message given a fresh start, corresponding inputs, and a Computer opponent" do
+      user_input = [input: "1\n3\n5\n7\n"]
+
+      players = %{"X" => HumanPlayer, "O" => EasyComputerPlayer}
+
+      game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, players)) end)
+
+      assert game_play =~
+        """
+        Welcome to Tic-Tac-Toe
+
+        1 | 2 | 3
+        --|---|--
+        4 | 5 | 6
+        --|---|--
+        7 | 8 | 9
+        """
+
+      assert game_play =~
+        """
+        X | O | X
+        --|---|--
+        O | X | O
+        --|---|--
+        X | 8 | 9
+
+        Player X has Won!
         """
     end
   end

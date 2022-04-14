@@ -1,33 +1,16 @@
 defmodule TicTacToeIntegrationTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   import ExUnit.CaptureIO
 
   alias Game.TicTacToe
+  alias Game.Player.HumanPlayer
+  alias Game.Player.EasyComputerPlayer
   alias Communication.CommandLine.CommandLineFormatter
   alias Communication.CommandLine.CommandLineCommunicator
 
+  @human_players %{"X" => HumanPlayer, "O" => HumanPlayer}
+
   describe "start/1" do
-    test "displays welcome message and board when first called" do
-      user_input = "1"
-
-      board = %{
-        1 => :empty, 2 => "X", 3 => "X",
-        4 => :empty, 5 => "O", 6 => "O",
-        7 => :empty, 8 => :empty, 9 => :empty
-      }
-
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board)) end) =~
-        """
-        Welcome to Tic-Tac-Toe
-
-        1 | X | X
-        --|---|--
-        4 | O | O
-        --|---|--
-        7 | 8 | 9
-        """
-    end
-
     test "displays the corresponding board after a valid move" do
       user_input = "4"
 
@@ -37,7 +20,7 @@ defmodule TicTacToeIntegrationTest do
         7 => :empty, 8 => "X", 9 => :empty
       }
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board, @human_players)) end) =~
         """
         1 | X | X
         --|---|--
@@ -56,7 +39,7 @@ defmodule TicTacToeIntegrationTest do
         7 => :empty, 8 => "O", 9 => :empty
       }
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board, @human_players)) end) =~
         "Invalid input, please input a number between 1 and 9"
     end
 
@@ -69,7 +52,7 @@ defmodule TicTacToeIntegrationTest do
         7 => "O", 8 => "O", 9 => "X"
       }
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board, @human_players)) end) =~
         "No player has won, tie!\n"
     end
 
@@ -82,14 +65,8 @@ defmodule TicTacToeIntegrationTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board, @human_players)) end) =~
         """
-        1 | 2 | O
-        --|---|--
-        X | O | X
-        --|---|--
-        7 | 8 | 9
-
         Player X, please make desired move:\s
         1 | X | O
         --|---|--
@@ -98,6 +75,29 @@ defmodule TicTacToeIntegrationTest do
         7 | 8 | 9
 
         Player O, please make desired move:\s
+        """
+    end
+
+    test "displays easy computers move decision (next possible move) and the resulting updated board after human turn" do
+      user_input = [input: "2\n"]
+
+      board = %{
+        1 => "O", 2 => :empty, 3 => "X",
+        4 => :empty, 5 => :empty, 6 => "X",
+        7 => "O", 8 => :empty, 9 => :empty
+      }
+
+      players = %{"X" => HumanPlayer, "O" => EasyComputerPlayer}
+
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board, players)) end) =~
+        """
+        Player O, please make desired move (Computer): 4
+
+        O | X | X
+        --|---|--
+        O | 5 | X
+        --|---|--
+        O | 8 | 9
         """
     end
   end

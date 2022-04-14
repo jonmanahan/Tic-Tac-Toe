@@ -5,38 +5,38 @@ defmodule Game.TicTacToe do
 
   alias Game.Board
   alias Game.Message
-  alias Game.Validator
+  #alias Game.Player.HumanPlayer
 
   @welcome_message "Welcome to Tic-Tac-Toe"
 
-  @spec start(any(), any()) :: nil
-  def start(communicator, communicator_formatter, board \\ Board.setup_initial_board()) do
+  @spec start(any(), any(), map()) :: nil
+  def start(communicator, communicator_formatter, players) do
+    board = Board.setup_initial_board()
     welcome = @welcome_message <> "\n" <> communicator_formatter.format_board(board)
     communicator.display(welcome)
 
-    play_turn(communicator, communicator_formatter, board)
+    start(communicator, communicator_formatter, board, players)
   end
 
-  @spec play_turn(any(), any(), map()) :: nil
-  defp play_turn(communicator, communicator_formatter, board) do
-    player_symbol = Board.calculate_turn(board)
-    communicator.display("Player #{player_symbol}, ")
-    player_input = String.trim(communicator.read_input())
-    case Validator.validate(board, player_input) do
+  def start(communicator, communicator_formatter, board, players) do
+    current_symbol = Board.calculate_turn(board)
+    current_player = Map.fetch!(players, current_symbol)
+    communicator.display("Player #{current_symbol}, ")
+    case current_player.valid_input(board, communicator) do
       {:ok, player_move} ->
-        board = Board.place_a_symbol(board, player_move, player_symbol)
+        board = Board.place_a_symbol(board, player_move, current_symbol)
         communicator.display(communicator_formatter.format_board(board))
 
         board
-        |> Message.game_status(player_symbol)
+        |> Message.game_status(current_symbol)
         |> communicator.display()
-        if Board.game_status(board) == :in_progress, do: play_turn(communicator, communicator_formatter, board)
+        if Board.game_status(board) == :in_progress, do: start(communicator, communicator_formatter, board, players)
       {:invalid, invalid_input_status} ->
         invalid_input_status
         |> Message.invalid_input()
         |> communicator.display()
 
-        play_turn(communicator, communicator_formatter, board)
+        start(communicator, communicator_formatter, board, players)
     end
   end
 end
