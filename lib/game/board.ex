@@ -31,9 +31,30 @@ defmodule Game.Board do
     end
   end
 
+  @spec board_dimensions(map()) :: integer()
+  def board_dimensions(board) do
+    trunc(:math.sqrt(Enum.count(board)))
+  end
+
+  @spec calculate_turn(map()) :: :player_one | :player_two
+  def calculate_turn(board) do
+    board_values = Map.values(board)
+    taken_space_count = Enum.count(board_values, fn symbol -> !is_space_empty?(symbol) end)
+    if rem(taken_space_count, 2) == 0 do
+      :player_one
+    else
+      :player_two
+    end
+  end
+
+  @spec available_spaces(map()) :: map()
+  def available_spaces(board) do
+    Map.filter(board, fn {_key, val} -> is_space_empty?(val) end)
+  end
+
   @spec is_space_taken?(map(), integer()) :: boolean()
   defp is_space_taken?(board, player_move) do
-    Map.fetch!(board, player_move) != :empty
+    !is_space_empty?(Map.fetch!(board, player_move))
   end
 
   @spec is_out_of_bounds?(map(), integer()) :: boolean()
@@ -48,24 +69,7 @@ defmodule Game.Board do
 
   @spec is_board_full?(map) :: boolean
   defp is_board_full?(board) do
-    !Enum.member?(Map.values(board), :empty)
-  end
-
-  @spec board_dimensions(map()) :: integer()
-  def board_dimensions(board) do
-    trunc(:math.sqrt(Enum.count(board)))
-  end
-
-  @spec calculate_turn(map()) :: String.t()
-  def calculate_turn(board) do
-    board_values = Map.values(board)
-    x_count = Enum.count(board_values, fn symbol -> symbol == "X" end)
-    o_count = Enum.count(board_values, fn symbol -> symbol == "O" end)
-    if x_count == o_count do
-      "X"
-    else
-      "O"
-    end
+    !Enum.any?(Map.values(board), fn space -> is_space_empty?(space) end)
   end
 
   @spec win_by_rows?(map()) :: boolean()
@@ -109,6 +113,11 @@ defmodule Game.Board do
 
   @spec is_winning_vector?(list()) :: boolean()
   defp is_winning_vector?(symbols_in_vector) do
-    Enum.count(symbols_in_vector) == 1 && !Enum.member?(symbols_in_vector, :empty)
+    Enum.count(symbols_in_vector) == 1 && !Enum.any?(symbols_in_vector, fn space -> is_space_empty?(space) end)
+  end
+
+  @spec is_space_empty?(non_neg_integer()) :: bool
+  defp is_space_empty?(space) do
+    space == :empty
   end
 end

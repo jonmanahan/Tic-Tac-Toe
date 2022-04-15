@@ -196,7 +196,7 @@ defmodule BoardTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert Board.calculate_turn(board) == "X"
+      assert Board.calculate_turn(board) == :player_one
     end
 
     test "determines the second move is O’s turn given a board with one X" do
@@ -206,7 +206,7 @@ defmodule BoardTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert Board.calculate_turn(board) == "O"
+      assert Board.calculate_turn(board) == :player_two
     end
 
     test "determines its X's turn when there are the same number of X's and O'x on the board" do
@@ -216,7 +216,7 @@ defmodule BoardTest do
         7 => "X", 8 => :empty, 9 => "X"
       }
 
-      assert Board.calculate_turn(board) == "X"
+      assert Board.calculate_turn(board) == :player_one
     end
 
     test "determines its O's turn when there are the not same number of X's and O'x on the board" do
@@ -226,7 +226,19 @@ defmodule BoardTest do
         7 => "X", 8 => "X", 9 => "O"
       }
 
-      assert Board.calculate_turn(board) == "O"
+      assert Board.calculate_turn(board) == :player_two
+    end
+  end
+
+  describe "available_spaces/1" do
+    test "" do
+      board = %{
+        1 => "O", 2 => :empty, 3 => "O",
+        4 => "X", 5 => :empty, 6 => "X",
+        7 => "X", 8 => "X", 9 => :empty
+      }
+
+      assert Board.available_spaces(board) == %{2 => :empty, 5 => :empty, 9 => :empty}
     end
   end
 end

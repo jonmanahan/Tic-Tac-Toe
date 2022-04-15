@@ -2,11 +2,12 @@ defmodule TicTacToeTest do
   use ExUnit.Case, async: true
 
   alias Game.TicTacToe
-  alias Game.Player.HumanPlayer
-  alias Game.Player.EasyComputerPlayer
+  alias Game.Player
+  alias Game.Players
+  alias Game.PlayerType.EasyComputerPlayer
   alias Communication.CommandLine.CommandLineFormatter
 
-  @human_players %{"X" => HumanPlayer, "O" => HumanPlayer}
+  @human_players %Players{}
 
   describe "start/1" do
     test "displays user input message when X's turn" do
@@ -171,7 +172,7 @@ defmodule TicTacToeTest do
         7 => :empty, 8 => :empty, 9 => "O"
       }
 
-      players = %{"X" => HumanPlayer, "O" => EasyComputerPlayer}
+      players = %Players{player_two: %Player{type: EasyComputerPlayer, symbol: "O"}}
 
       TicTacToe.start(CommunicatorMock, CommandLineFormatter, board, players)
 
