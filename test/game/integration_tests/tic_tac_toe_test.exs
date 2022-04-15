@@ -3,12 +3,13 @@ defmodule TicTacToeIntegrationTest do
   import ExUnit.CaptureIO
 
   alias Game.TicTacToe
-  alias Game.Player.HumanPlayer
-  alias Game.Player.EasyComputerPlayer
+  alias Game.Player
+  alias Game.Players
+  alias Game.PlayerType.EasyComputerPlayer
   alias Communication.CommandLine.CommandLineFormatter
   alias Communication.CommandLine.CommandLineCommunicator
 
-  @human_players %{"X" => HumanPlayer, "O" => HumanPlayer}
+  @human_players %Players{}
 
   describe "start/1" do
     test "displays the corresponding board after a valid move" do
@@ -87,7 +88,7 @@ defmodule TicTacToeIntegrationTest do
         7 => "O", 8 => :empty, 9 => :empty
       }
 
-      players = %{"X" => HumanPlayer, "O" => EasyComputerPlayer}
+      players = %Players{player_two: %Player{type: EasyComputerPlayer, symbol: "O"}}
 
       assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board, players)) end) =~
         """

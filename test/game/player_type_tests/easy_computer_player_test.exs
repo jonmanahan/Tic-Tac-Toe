@@ -1,7 +1,7 @@
 defmodule EasyComputerPlayerTest do
   use ExUnit.Case
 
-  alias Game.Player.EasyComputerPlayer
+  alias Game.PlayerType.EasyComputerPlayer
 
   describe "input/2" do
     test "returns first available move" do

@@ -1,7 +1,7 @@
 defmodule HumanPlayerTest do
   use ExUnit.Case
 
-  alias Game.Player.HumanPlayer
+  alias Game.PlayerType.HumanPlayer
 
   describe "valid_input/2" do
     test "returns valid tuple given valid human player input" do
