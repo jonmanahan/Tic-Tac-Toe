@@ -5,11 +5,10 @@ defmodule Mix.Tasks.Start do
   """
 
   alias Game.TicTacToe
-  alias Game.Players
   alias Communication.CommandLine.CommandLineFormatter
   alias Communication.CommandLine.CommandLineCommunicator
 
   def run(_) do
-    TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, %Players{})
+    TicTacToe.start(CommandLineCommunicator, CommandLineFormatter)
   end
 end

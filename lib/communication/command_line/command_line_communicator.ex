@@ -10,7 +10,7 @@ defmodule Communication.CommandLine.CommandLineCommunicator do
     IO.write(message)
   end
 
-  def read_input() do
-    IO.gets("please make desired move: ")
+  def read_input(prompt) do
+    IO.gets(prompt)
   end
 end

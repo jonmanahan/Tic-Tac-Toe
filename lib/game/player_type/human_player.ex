@@ -10,7 +10,7 @@ defmodule Game.PlayerType.HumanPlayer do
 
   @impl PlayerBehaviour
   def valid_input(board, communicator) do
-    player_input = String.trim(communicator.read_input())
+    player_input = String.trim(communicator.read_input("please make desired move: "))
     Validator.validate(board, player_input)
   end
 end

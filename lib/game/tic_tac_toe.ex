@@ -6,12 +6,15 @@ defmodule Game.TicTacToe do
   alias Game.Board
   alias Game.Message
   alias Game.Player
+  alias Game.GameSetup
 
   @welcome_message "Welcome to Tic-Tac-Toe"
 
-  @spec start(any(), any(), struct()) :: nil
-  def start(communicator, communicator_formatter, players) do
+  @spec start(any(), any()) :: nil
+  def start(communicator, communicator_formatter) do
     board = Board.setup_initial_board()
+    players = GameSetup.setup_players(communicator)
+
     welcome = @welcome_message <> "\n" <> communicator_formatter.format_board(board)
     communicator.display(welcome)
 
