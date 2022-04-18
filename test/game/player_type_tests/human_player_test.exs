@@ -4,7 +4,7 @@ defmodule HumanPlayerTest do
   alias Game.PlayerType.HumanPlayer
 
   describe "valid_input/2" do
-    test "returns valid tuple given valid human player input" do
+    test "returns valid move given valid human player input" do
       user_input = ["1"]
       start_supervised!({CommunicatorMock, user_input})
 
@@ -17,7 +17,7 @@ defmodule HumanPlayerTest do
       assert HumanPlayer.valid_input(board, CommunicatorMock) == {:ok, 1}
     end
 
-    test "returns invalid tuple given invalid human player input" do
+    test "returns invalid move and reason given invalid human player input" do
       user_input = ["2"]
       start_supervised!({CommunicatorMock, user_input})
 

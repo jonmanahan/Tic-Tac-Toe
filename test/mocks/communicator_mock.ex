@@ -14,8 +14,8 @@ defmodule CommunicatorMock do
   end
 
   @impl true
-  def read_input() do
-    GenServer.call(CommunicatorMockServer, :read_input)
+  def read_input(prompt) do
+    GenServer.call(CommunicatorMockServer, {:read_input, prompt})
   end
 
   def start_link(user_inputs) do
@@ -35,10 +35,10 @@ defmodule CommunicatorMock do
   end
 
   @impl true
-  def handle_call(:read_input, _from, full_message) do
+  def handle_call({:read_input, prompt}, _from, full_message) do
     [user_input | remaining_user_inputs] = Process.get(:mock_user_inputs)
     Process.put(:mock_user_inputs, remaining_user_inputs)
-    full_message = full_message <> "please make desired move: #{user_input}"
+    full_message = full_message <> prompt <> "#{user_input}"
     {:reply, user_input, full_message}
   end
 end
