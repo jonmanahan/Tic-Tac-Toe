@@ -6,8 +6,7 @@ defmodule TicTacToeIntegrationTest do
   alias Game.Player
   alias Game.Players
   alias Game.PlayerType.EasyComputerPlayer
-  alias Communication.CommandLine.CommandLineFormatter
-  alias Communication.CommandLine.CommandLineCommunicator
+  alias Communication.CommandLine
 
   @human_players %Players{}
 
@@ -21,7 +20,7 @@ defmodule TicTacToeIntegrationTest do
         7 => :empty, 8 => "X", 9 => :empty
       }
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board, @human_players)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(%CommandLine{}, board, @human_players)) end) =~
         """
         1 | X | X
         --|---|--
@@ -40,7 +39,7 @@ defmodule TicTacToeIntegrationTest do
         7 => :empty, 8 => "O", 9 => :empty
       }
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board, @human_players)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(%CommandLine{}, board, @human_players)) end) =~
         "Invalid input, please input a number between 1 and 9"
     end
 
@@ -53,7 +52,7 @@ defmodule TicTacToeIntegrationTest do
         7 => "O", 8 => "O", 9 => "X"
       }
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board, @human_players)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(%CommandLine{}, board, @human_players)) end) =~
         "No player has won, tie!\n"
     end
 
@@ -66,7 +65,7 @@ defmodule TicTacToeIntegrationTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board, @human_players)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(%CommandLine{}, board, @human_players)) end) =~
         """
         Player X, please make desired move:\s
         1 | X | O
@@ -90,7 +89,7 @@ defmodule TicTacToeIntegrationTest do
 
       players = %Players{player_two: %Player{type: EasyComputerPlayer, symbol: "O"}}
 
-      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(CommandLineCommunicator, CommandLineFormatter, board, players)) end) =~
+      assert capture_io(user_input, fn -> IO.write(TicTacToe.start(%CommandLine{}, board, players)) end) =~
         """
         Player O, please make desired move (Computer): 4
 
