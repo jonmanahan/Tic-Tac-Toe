@@ -19,6 +19,23 @@ defmodule Communication.CommandLine.CommandLineFormatter do
     |> Enum.join()
   end
 
+  @spec format_player_setup(String.t(), list(), list()) :: String.t()
+  def format_player_setup(player_symbol, player_types, symbols) do
+    player_number = get_player_number_by_symbol(player_symbol, symbols)
+
+    player_types
+    |> Enum.with_index(fn player, index -> {"#{index + 1}", player} end)
+    |> Enum.map_intersperse(", ", fn {selection_number, %{name: player_name}} -> "#{selection_number} - #{player_name}" end)
+    |> List.insert_at(0, "Please select Player #{player_number} (#{player_symbol}) => ")
+    |> List.insert_at(-1, ": ")
+    |> Enum.join()
+  end
+
+  @spec get_player_number_by_symbol(String.t(), list()) :: non_neg_integer()
+  defp get_player_number_by_symbol(player_symbol, symbols) do
+    Enum.find_index(symbols, fn symbol -> symbol == player_symbol end) + 1
+  end
+
   defp format_position({board_position, :empty}) do
     {board_position, "#{board_position}"}
   end

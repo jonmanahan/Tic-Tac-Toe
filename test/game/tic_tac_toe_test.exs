@@ -5,14 +5,15 @@ defmodule TicTacToeTest do
   alias Game.Player
   alias Game.Players
   alias Game.PlayerType.EasyComputerPlayer
-  alias Communication.CommandLine.CommandLineFormatter
+  alias Communication.CommandLine
 
   @human_players %Players{}
+  @mock_command_line %CommandLine{communicator: CommunicatorMock}
 
   describe "start/1" do
     test "displays user input message when X's turn" do
-      user_input = ["1"]
-      start_supervised!({CommunicatorMock, user_input})
+      user_input = "1"
+      setup_mock([user_input])
 
       board = %{
         1 => :empty, 2 => "X", 3 => "X",
@@ -20,15 +21,15 @@ defmodule TicTacToeTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board, @human_players)
+      TicTacToe.start(@mock_command_line, board, @human_players)
 
       assert :sys.get_state(CommunicatorMockServer) =~
         "Player X, please make desired move: #{user_input}"
     end
 
     test "displays user input message when O's turn" do
-      user_input = ["4"]
-      start_supervised!({CommunicatorMock, user_input})
+      user_input = "4"
+      setup_mock([user_input])
 
       board = %{
         1 => :empty, 2 => "X", 3 => "X",
@@ -36,15 +37,14 @@ defmodule TicTacToeTest do
         7 => :empty, 8 => "X", 9 => :empty
       }
 
-      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board, @human_players)
+      TicTacToe.start(@mock_command_line, board, @human_players)
 
       assert :sys.get_state(CommunicatorMockServer) =~
         "Player O, please make desired move: #{user_input}"
     end
 
     test "displays X's winning message" do
-      user_input = ["1"]
-      start_supervised!({CommunicatorMock, user_input})
+      setup_mock(["1"])
 
       board = %{
         1 => :empty, 2 => "X", 3 => "X",
@@ -52,15 +52,14 @@ defmodule TicTacToeTest do
         7 => "X", 8 => :empty, 9 => "O"
       }
 
-      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board, @human_players)
+      TicTacToe.start(@mock_command_line, board, @human_players)
 
       assert :sys.get_state(CommunicatorMockServer) =~
         "Player X has Won!"
     end
 
     test "displays O's winning message" do
-      user_input = ["1"]
-      start_supervised!({CommunicatorMock, user_input})
+      setup_mock(["1"])
 
       board = %{
         1 => :empty, 2 => "O", 3 => "O",
@@ -68,15 +67,14 @@ defmodule TicTacToeTest do
         7 => "X", 8 => :empty, 9 => "X"
       }
 
-      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board, @human_players)
+      TicTacToe.start(@mock_command_line, board, @human_players)
 
       assert :sys.get_state(CommunicatorMockServer) =~
         "Player O has Won!"
     end
 
     test "displays tie message" do
-      user_input = ["1"]
-      start_supervised!({CommunicatorMock, user_input})
+      setup_mock(["1"])
 
       board = %{
         1 => :empty, 2 => "O", 3 => "X",
@@ -84,15 +82,14 @@ defmodule TicTacToeTest do
         7 => "X", 8 => "X", 9 => "O"
       }
 
-      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board, @human_players)
+      TicTacToe.start(@mock_command_line, board, @human_players)
 
       assert :sys.get_state(CommunicatorMockServer) =~
         "No player has won, tie!"
     end
 
     test "displays non-numerical validation message via first input, then displays updated board via second" do
-      user_inputs = ["this is not a numerical input", "1"]
-      start_supervised!({CommunicatorMock, user_inputs})
+      setup_mock(["this is not a numerical input", "1"])
 
       board = %{
         1 => :empty, 2 => "X", 3 => "X",
@@ -100,7 +97,7 @@ defmodule TicTacToeTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board, @human_players)
+      TicTacToe.start(@mock_command_line, board, @human_players)
 
       assert :sys.get_state(CommunicatorMockServer) =~
         "Invalid input, please input a number between 1 and 9\n"
@@ -115,8 +112,7 @@ defmodule TicTacToeTest do
     end
 
     test "displays out of bounds validation message via first input, then displays updated board via second" do
-      user_inputs = ["12", "1"]
-      start_supervised!({CommunicatorMock, user_inputs})
+      setup_mock(["12", "1"])
 
       board = %{
         1 => :empty, 2 => "X", 3 => "X",
@@ -124,7 +120,7 @@ defmodule TicTacToeTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board, @human_players)
+      TicTacToe.start(@mock_command_line, board, @human_players)
 
       assert :sys.get_state(CommunicatorMockServer) =~
         "Invalid input, number out of bounds\n"
@@ -139,8 +135,7 @@ defmodule TicTacToeTest do
     end
 
     test "displays space taken validation message via first input, then displays updated board via second" do
-      user_inputs = ["2", "1"]
-      start_supervised!({CommunicatorMock, user_inputs})
+      setup_mock(["2", "1"])
 
       board = %{
         1 => :empty, 2 => "X", 3 => "X",
@@ -148,7 +143,7 @@ defmodule TicTacToeTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board, @human_players)
+      TicTacToe.start(@mock_command_line, board, @human_players)
 
       assert :sys.get_state(CommunicatorMockServer) =~
         "Invalid input, position has already been taken\n"
@@ -163,8 +158,7 @@ defmodule TicTacToeTest do
     end
 
     test "displays computers move message (next available spot) after human turn, then displays updated board" do
-      user_inputs = ["2"]
-      start_supervised!({CommunicatorMock, user_inputs})
+      setup_mock(["2"])
 
       board = %{
         1 => :empty, 2 => :empty, 3 => "X",
@@ -174,7 +168,7 @@ defmodule TicTacToeTest do
 
       players = %Players{player_two: %Player{type: EasyComputerPlayer, symbol: "O"}}
 
-      TicTacToe.start(CommunicatorMock, CommandLineFormatter, board, players)
+      TicTacToe.start(@mock_command_line, board, players)
 
       assert :sys.get_state(CommunicatorMockServer) =~
         "Player O, please make desired move (Computer): 1"
@@ -187,5 +181,9 @@ defmodule TicTacToeTest do
         7 | 8 | O
         """
     end
+  end
+
+  defp setup_mock(user_inputs) do
+    start_supervised!({@mock_command_line.communicator, user_inputs})
   end
 end
