@@ -23,14 +23,14 @@ defmodule Game.TicTacToe do
   end
 
   def start(interface, board, players) do
-    %Player{symbol: current_symbol, type: player_type} = Players.get_player(players, Board.calculate_turn(board))
-    case player_type.valid_input(board, current_symbol, interface.communicator) do
+    player = Players.get_player(players, Board.calculate_turn(board))
+    case Player.get_move(player, board, interface.communicator) do
       {:ok, player_move} ->
-        board = Board.place_a_symbol(board, player_move, current_symbol)
+        board = Board.place_a_symbol(board, player_move, player.symbol)
         interface.communicator.display(interface.formatter.format_board(board))
 
         board
-        |> Message.game_status(current_symbol)
+        |> Message.game_status(player.symbol)
         |> interface.communicator.display()
         if Board.game_status(board) == :in_progress, do: start(interface, board, players)
       {:invalid, invalid_input_status} ->
