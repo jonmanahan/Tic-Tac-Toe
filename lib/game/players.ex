@@ -15,4 +15,9 @@ defmodule Game.Players do
   def set_players(player_one, player_two) do
     %Players{player_one: player_one, player_two: player_two}
   end
+
+  @spec get_player(Players.t(), :player_one | :player_two) :: Player.t()
+  def get_player(players, player_number) do
+    Map.get(players, player_number)
+  end
 end
