@@ -6,6 +6,7 @@ defmodule Game.TicTacToe do
   alias Game.Board
   alias Game.Message
   alias Game.Player
+  alias Game.Players
   alias Game.GameSetup
 
   @welcome_message "Welcome to Tic-Tac-Toe"
@@ -22,7 +23,7 @@ defmodule Game.TicTacToe do
   end
 
   def start(interface, board, players) do
-    %Player{symbol: current_symbol, type: player_type} = Map.get(players, Board.calculate_turn(board))
+    %Player{symbol: current_symbol, type: player_type} = Players.get_player(players, Board.calculate_turn(board))
     case player_type.valid_input(board, current_symbol, interface.communicator) do
       {:ok, player_move} ->
         board = Board.place_a_symbol(board, player_move, current_symbol)

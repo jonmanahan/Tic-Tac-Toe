@@ -15,4 +15,13 @@ defmodule PlayersTest do
         %Players{player_one: %Player{type: HumanPlayer, symbol: "X"}, player_two: %Player{type: EasyComputerPlayer, symbol: "O"}}
     end
   end
+
+  describe "get_player/2" do
+    test "gets the player based off the current player number" do
+      %Players{player_one: player_one, player_two: player_two} = players = %Players{}
+
+      assert Players.get_player(players, :player_one) == player_one
+      assert Players.get_player(players, :player_two) == player_two
+    end
+  end
 end
