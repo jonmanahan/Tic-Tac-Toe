@@ -103,7 +103,6 @@ defmodule HardComputerPlayerTest do
       assert HardComputerPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 1}
     end
 
-    @tag :skip
     test "returns the best available move for X given a starting board" do
       player = %Player{type: HardComputerPlayer, symbol: "X"}
 
@@ -115,7 +114,7 @@ defmodule HardComputerPlayerTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert HardComputerPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 5}
+      assert HardComputerPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 1}
     end
   end
 end
