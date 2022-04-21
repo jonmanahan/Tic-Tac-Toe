@@ -1,11 +1,12 @@
 defmodule EasyComputerPlayerTest do
   use ExUnit.Case
 
+  alias Game.Player
   alias Game.PlayerType.EasyComputerPlayer
 
   describe "valid_input/3" do
     test "returns first available move" do
-      symbol = "X"
+      player = %Player{type: EasyComputerPlayer, symbol: "X"}
 
       start_supervised!(CommunicatorMock)
 
@@ -15,11 +16,11 @@ defmodule EasyComputerPlayerTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert EasyComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 1}
+      assert EasyComputerPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 1}
     end
 
     test "returns next available move" do
-      symbol = "X"
+      player = %Player{type: EasyComputerPlayer, symbol: "X"}
 
       start_supervised!(CommunicatorMock)
 
@@ -29,7 +30,7 @@ defmodule EasyComputerPlayerTest do
         7 => "X", 8 => "X", 9 => :empty
       }
 
-      assert EasyComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 4}
+      assert EasyComputerPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 4}
     end
   end
 end
