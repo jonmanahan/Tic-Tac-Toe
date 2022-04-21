@@ -1,11 +1,12 @@
 defmodule HardComputerPlayerTest do
   use ExUnit.Case
 
+  alias Game.Player
   alias Game.PlayerType.HardComputerPlayer
 
   describe "valid_input/3" do
     test "returns the winning move for X given a board where X can immediately win" do
-      symbol = "X"
+      player = %Player{type: HardComputerPlayer, symbol: "X"}
 
       start_supervised!(CommunicatorMock)
 
@@ -15,11 +16,11 @@ defmodule HardComputerPlayerTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert HardComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 7}
+      assert HardComputerPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 7}
     end
 
     test "returns move leading to tie for X given a board where X will tie or immediately lose" do
-      symbol = "X"
+      player = %Player{type: HardComputerPlayer, symbol: "X"}
 
       start_supervised!(CommunicatorMock)
 
@@ -29,11 +30,11 @@ defmodule HardComputerPlayerTest do
         7 => "X", 8 => "O", 9 => "X"
       }
 
-      assert HardComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 2}
+      assert HardComputerPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 2}
     end
 
     test "returns the next best available move for X given a board where X can't immediately win or tie" do
-      symbol = "X"
+      player = %Player{type: HardComputerPlayer, symbol: "X"}
 
       start_supervised!(CommunicatorMock)
 
@@ -43,11 +44,11 @@ defmodule HardComputerPlayerTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert HardComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 1}
+      assert HardComputerPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 1}
     end
 
     test "returns the winning move for O given a board where O can immediately win" do
-      symbol = "O"
+      player = %Player{type: HardComputerPlayer, symbol: "O"}
 
       start_supervised!(CommunicatorMock)
 
@@ -57,11 +58,11 @@ defmodule HardComputerPlayerTest do
         7 => :empty, 8 => "X", 9 => "X"
       }
 
-      assert HardComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 3}
+      assert HardComputerPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 3}
     end
 
     test "returns the winning move for O given a board where O can immediately win or tie" do
-      symbol = "O"
+      player = %Player{type: HardComputerPlayer, symbol: "O"}
 
       start_supervised!(CommunicatorMock)
 
@@ -71,11 +72,11 @@ defmodule HardComputerPlayerTest do
         7 => "X", 8 => "O", 9 => "X"
       }
 
-      assert HardComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 2}
+      assert HardComputerPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 2}
     end
 
     test "returns the tieing move for O given a board where O will tie or immediately lose" do
-      symbol = "O"
+      player = %Player{type: HardComputerPlayer, symbol: "O"}
 
       start_supervised!(CommunicatorMock)
 
@@ -85,11 +86,11 @@ defmodule HardComputerPlayerTest do
         7 => "X", 8 => "O", 9 => "X"
       }
 
-      assert HardComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 3}
+      assert HardComputerPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 3}
     end
 
     test "returns one of the best available moves for O given a board where O can't immediately win or tie" do
-      symbol = "O"
+      player = %Player{type: HardComputerPlayer, symbol: "O"}
 
       start_supervised!(CommunicatorMock)
 
@@ -99,12 +100,12 @@ defmodule HardComputerPlayerTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert HardComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 1}
+      assert HardComputerPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 1}
     end
 
     @tag :skip
     test "returns the best available move for X given a starting board" do
-      symbol = "X"
+      player = %Player{type: HardComputerPlayer, symbol: "X"}
 
       start_supervised!(CommunicatorMock)
 
@@ -114,7 +115,7 @@ defmodule HardComputerPlayerTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert HardComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 5}
+      assert HardComputerPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 5}
     end
   end
 end

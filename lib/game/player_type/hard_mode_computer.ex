@@ -4,12 +4,13 @@ defmodule Game.PlayerType.HardComputerPlayer do
   """
 
   alias Game.PlayerType.PlayerBehaviour
+  alias Game.Player
   alias Game.Board
 
   @behaviour PlayerBehaviour
 
   @impl PlayerBehaviour
-  def valid_input(board, symbol, communicator) do
+  def valid_input(%Player{symbol: symbol}, board, communicator) do
     moves_with_scores = board
     |> Board.available_spaces()
     |> Map.new(fn {position, _empty_space} -> {position, minimax(Board.place_a_symbol(board, position, symbol), 0, symbol)} end)

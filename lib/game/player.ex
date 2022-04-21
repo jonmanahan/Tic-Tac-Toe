@@ -16,7 +16,7 @@ defmodule Game.Player do
   end
 
   @spec get_move(Player.t(), map(), any) :: any
-  def get_move(%Player{type: player_type, symbol: symbol}, board, communicator) do
-    player_type.valid_input(board, symbol, communicator)
+  def get_move(player, board, communicator) do
+    player.type.valid_input(player, board, communicator)
   end
 end

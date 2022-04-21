@@ -1,12 +1,13 @@
 defmodule HumanPlayerTest do
   use ExUnit.Case
 
+  alias Game.Player
   alias Game.PlayerType.HumanPlayer
 
   describe "valid_input/3" do
     test "returns valid move given valid human player input" do
       user_input = ["1"]
-      symbol = "X"
+      player = %Player{type: HumanPlayer, symbol: "X"}
 
       start_supervised!({CommunicatorMock, user_input})
 
@@ -16,12 +17,12 @@ defmodule HumanPlayerTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert HumanPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 1}
+      assert HumanPlayer.valid_input(player, board, CommunicatorMock) == {:ok, 1}
     end
 
     test "returns invalid move and reason given invalid human player input" do
       user_input = ["2"]
-      symbol = "X"
+      player = %Player{type: HumanPlayer, symbol: "X"}
 
       start_supervised!({CommunicatorMock, user_input})
 
@@ -31,7 +32,7 @@ defmodule HumanPlayerTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert HumanPlayer.valid_input(board, symbol, CommunicatorMock) == {:invalid, :space_taken}
+      assert HumanPlayer.valid_input(player, board, CommunicatorMock) == {:invalid, :space_taken}
     end
   end
 end
