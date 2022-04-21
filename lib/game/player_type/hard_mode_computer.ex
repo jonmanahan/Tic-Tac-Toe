@@ -42,16 +42,9 @@ defmodule Game.PlayerType.HardComputerPlayer do
     end
   end
 
-  defp calculate_moves_score(depth, game_status, symbol) do
-    if game_status == :won do
-      case symbol do
-        "X" -> 10 - depth
-        "O" -> -10 + depth
-      end
-    else
-      0
-    end
-  end
+  defp calculate_moves_score(_depth, :tied, _symbol), do: 0
+  defp calculate_moves_score(depth, :won, "X"), do: 10 - depth
+  defp calculate_moves_score(depth, :won, "O"), do: -10 + depth
 
   defp get_scores_for_all_potential_moves(board, depth, symbol) do
     board
