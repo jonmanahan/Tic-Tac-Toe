@@ -32,7 +32,7 @@ defmodule HardComputerPlayerTest do
       assert HardComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 2}
     end
 
-    test "returns the next best available moves for X given a board where X can't immediately win or tie" do
+    test "returns the next best available move for X given a board where X can't immediately win or tie" do
       symbol = "X"
 
       start_supervised!(CommunicatorMock)
