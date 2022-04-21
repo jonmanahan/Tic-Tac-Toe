@@ -99,7 +99,7 @@ defmodule HardComputerPlayerTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert HardComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 1} || {:ok, 3} || {:ok, 7} || {:ok, 9}
+      assert HardComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 1}
     end
 
     @tag :skip
