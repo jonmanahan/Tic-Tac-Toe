@@ -9,13 +9,13 @@ defmodule Game.PlayerType.EasyComputerPlayer do
   @behaviour PlayerBehaviour
 
   @impl PlayerBehaviour
-  def valid_input(board, communicator) do
+  def valid_input(board, symbol, communicator) do
     valid_move = board
     |> Board.available_spaces()
     |> Map.keys()
     |> List.first()
 
-    communicator.display("please make desired move (Computer): #{valid_move}\n")
+    communicator.display("Player #{symbol}, please make desired move (Computer): #{valid_move}\n")
 
     {:ok, valid_move}
   end

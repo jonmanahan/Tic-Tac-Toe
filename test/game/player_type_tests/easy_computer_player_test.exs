@@ -3,8 +3,10 @@ defmodule EasyComputerPlayerTest do
 
   alias Game.PlayerType.EasyComputerPlayer
 
-  describe "input/2" do
+  describe "valid_input/3" do
     test "returns first available move" do
+      symbol = "X"
+
       start_supervised!(CommunicatorMock)
 
       board = %{
@@ -13,10 +15,12 @@ defmodule EasyComputerPlayerTest do
         7 => :empty, 8 => :empty, 9 => :empty
       }
 
-      assert EasyComputerPlayer.valid_input(board, CommunicatorMock) == {:ok, 1}
+      assert EasyComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 1}
     end
 
     test "returns next available move" do
+      symbol = "X"
+
       start_supervised!(CommunicatorMock)
 
       board = %{
@@ -25,7 +29,7 @@ defmodule EasyComputerPlayerTest do
         7 => "X", 8 => "X", 9 => :empty
       }
 
-      assert EasyComputerPlayer.valid_input(board, CommunicatorMock) == {:ok, 4}
+      assert EasyComputerPlayer.valid_input(board, symbol, CommunicatorMock) == {:ok, 4}
     end
   end
 end

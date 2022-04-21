@@ -23,8 +23,7 @@ defmodule Game.TicTacToe do
 
   def start(interface, board, players) do
     %Player{symbol: current_symbol, type: player_type} = Map.get(players, Board.calculate_turn(board))
-    interface.communicator.display("Player #{current_symbol}, ")
-    case player_type.valid_input(board, interface.communicator) do
+    case player_type.valid_input(board, current_symbol, interface.communicator) do
       {:ok, player_move} ->
         board = Board.place_a_symbol(board, player_move, current_symbol)
         interface.communicator.display(interface.formatter.format_board(board))
