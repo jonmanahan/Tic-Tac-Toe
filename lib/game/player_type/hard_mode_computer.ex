@@ -7,19 +7,27 @@ defmodule Game.PlayerType.HardComputerPlayer do
   alias Game.Player
   alias Game.Board
 
+  @empty_board Board.setup_initial_board()
+
   @behaviour PlayerBehaviour
 
   @impl PlayerBehaviour
   def valid_input(%Player{symbol: symbol}, board, communicator) do
-    moves_with_scores = board
-    |> Board.available_spaces()
-    |> Map.new(fn {position, _empty_space} -> {position, minimax(Board.place_a_symbol(board, position, symbol), 0, symbol)} end)
+    moves_with_scores = get_available_moves_with_scores(board, symbol)
 
     valid_move = get_best_move(Map.keys(moves_with_scores), Map.values(moves_with_scores), symbol)
 
     communicator.display("Player #{symbol}, please make desired move (Computer): #{valid_move}\n")
 
     {:ok, valid_move}
+  end
+
+
+  defp get_available_moves_with_scores(@empty_board, _symbol), do: %{1 => 10}
+  defp get_available_moves_with_scores(board, symbol) do
+    board
+    |> Board.available_spaces()
+    |> Map.new(fn {position, _empty_space} -> {position, minimax(Board.place_a_symbol(board, position, symbol), 0, symbol)} end)
   end
 
   defp minimax(board, depth, symbol) do
