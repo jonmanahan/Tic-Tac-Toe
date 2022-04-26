@@ -3,6 +3,7 @@ defmodule Game.GameSetup do
   The module that handles the player setup/selection logic for a Tic-Tac-Toe game
   """
 
+  alias Game.Validator
   alias Game.Player
   alias Game.Players
   alias Game.PlayerType.HumanPlayer
@@ -31,10 +32,17 @@ defmodule Game.GameSetup do
 
   defp select_difficulty(HumanPlayer, _interface), do: HumanPlayer
   defp select_difficulty(computer_types, interface) do
-    computer_types
+    computer_type_status = computer_types
     |> interface.formatter.format_computer_difficulty_setup()
     |> interface.communicator.read_input()
-    |> select_player_type(@computer_types)
+    |> Validator.validate_setup(@computer_types)
+
+    case computer_type_status do
+      {:invalid, _invalid_setup_status} ->
+        interface.communicator.display("Invalid selection, please enter 1 or 2\n")
+        select_difficulty(computer_types, interface)
+      {:ok, player_type} -> player_type
+    end
   end
 
   @spec create_player(any(), String.t()) :: Player.t()

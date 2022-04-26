@@ -83,5 +83,18 @@ defmodule GameSetupTest do
       assert GameSetup.setup_players(@mock_command_line) ==
         %Players{player_one: %Player{type: HardComputerPlayer, symbol: "X"}, player_two: %Player{type: HardComputerPlayer, symbol: "O"}}
     end
+
+    test "displays invalid setup validation message via invalid input, then returns players containing selected players and associated symbols" do
+      user_inputs = ["2", "3", "2", "2", "2"]
+      start_supervised!({@mock_command_line.communicator, user_inputs})
+
+      players = GameSetup.setup_players(@mock_command_line)
+
+      assert :sys.get_state(CommunicatorMockServer) =~
+        "Invalid selection, please enter 1 or 2\n"
+
+      assert players ==
+        %Players{player_one: %Player{type: HardComputerPlayer, symbol: "X"}, player_two: %Player{type: HardComputerPlayer, symbol: "O"}}
+    end
   end
 end
