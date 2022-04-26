@@ -1,6 +1,9 @@
 defmodule CommandLineFormatterTest do
   use ExUnit.Case
 
+  alias Game.PlayerType.HumanPlayer
+  alias Game.PlayerType.EasyComputerPlayer
+  alias Game.PlayerType.HardComputerPlayer
   alias Communication.CommandLine.CommandLineFormatter
 
   describe "format_board/1" do
@@ -58,6 +61,15 @@ defmodule CommandLineFormatterTest do
 
       assert CommandLineFormatter.format_player_setup("O", player_types, symbols) ==
       "Please select Player 2 (O) => 1 - Human, 2 - Computer: "
+    end
+  end
+
+  describe "format_computer_difficulty_setup/3" do
+    test "returns the select difficulty prompt for the computer difficulty selection" do
+      computer_difficulties = [%{type: EasyComputerPlayer, name: "Easy"}, %{type: HardComputerPlayer, name: "Unbeatable"}]
+
+      assert CommandLineFormatter.format_computer_difficulty_setup(computer_difficulties) ==
+      "Please select Difficulty => 1 - Easy, 2 - Unbeatable: "
     end
   end
 end

@@ -24,11 +24,23 @@ defmodule Communication.CommandLine.CommandLineFormatter do
     player_number = get_player_number_by_symbol(player_symbol, symbols)
 
     player_types
-    |> Enum.with_index(fn player, index -> {"#{index + 1}", player} end)
-    |> Enum.map_intersperse(", ", fn {selection_number, %{name: player_name}} -> "#{selection_number} - #{player_name}" end)
+    |> format_player_selections_with_numbers()
     |> List.insert_at(0, "Please select Player #{player_number} (#{player_symbol}) => ")
-    |> List.insert_at(-1, ": ")
     |> Enum.join()
+  end
+
+  def format_computer_difficulty_setup(computer_difficulties) do
+    computer_difficulties
+    |> format_player_selections_with_numbers()
+    |> List.insert_at(0, "Please select Difficulty => ")
+    |> Enum.join()
+  end
+
+  defp format_player_selections_with_numbers(selections) do
+    selections
+    |> Enum.with_index(fn selection, index -> {"#{index + 1}", selection} end)
+    |> Enum.map_intersperse(", ", fn {selection_number, %{name: selection_name}} -> "#{selection_number} - #{selection_name}" end)
+    |> List.insert_at(-1, ": ")
   end
 
   @spec get_player_number_by_symbol(String.t(), list()) :: non_neg_integer()
