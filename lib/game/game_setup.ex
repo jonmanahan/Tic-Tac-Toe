@@ -34,17 +34,17 @@ defmodule Game.GameSetup do
   @spec select_difficulty(player | list(), any()) :: player
   defp select_difficulty(HumanPlayer, _interface), do: HumanPlayer
   defp select_difficulty(computer_types, interface) do
-    computer_type_status = computer_types
+    computer_types
     |> interface.formatter.format_computer_difficulty_setup()
     |> interface.communicator.read_input()
     |> Validator.validate_setup(@computer_types)
+    |> get_valid_difficulty(interface)
+  end
 
-    case computer_type_status do
-      {:invalid, _invalid_setup_status} ->
-        interface.communicator.display(Message.invalid_setup_input())
-        select_difficulty(computer_types, interface)
-      {:ok, player_type} -> player_type
-    end
+  defp get_valid_difficulty({:ok, player_type}, _interface), do: player_type
+  defp get_valid_difficulty({:invalid, _reason}, interface) do
+    interface.communicator.display(Message.invalid_setup_input())
+    select_difficulty(@computer_types, interface)
   end
 
   @spec create_player(any(), String.t()) :: Player.t()
