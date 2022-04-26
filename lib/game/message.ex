@@ -22,4 +22,6 @@ defmodule Game.Message do
       :space_taken -> "Invalid input, position has already been taken\n"
     end
   end
+
+  def invalid_setup_input(), do: "Invalid selection, please enter 1 or 2\n"
 end
