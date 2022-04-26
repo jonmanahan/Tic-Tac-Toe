@@ -34,7 +34,6 @@ defmodule Game.GameSetup do
     computer_types
     |> interface.formatter.format_computer_difficulty_setup()
     |> interface.communicator.read_input()
-    |> String.trim()
     |> select_player_type(@computer_types)
   end
 
@@ -43,7 +42,6 @@ defmodule Game.GameSetup do
     player_symbol
     |> interface.formatter.format_player_setup(@player_types, @symbols)
     |> interface.communicator.read_input()
-    |> String.trim()
     |> select_player_type(@player_types)
     |> select_difficulty(interface)
     |> Player.create_player(player_symbol)
