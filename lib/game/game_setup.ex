@@ -7,10 +7,12 @@ defmodule Game.GameSetup do
   alias Game.Players
   alias Game.PlayerType.HumanPlayer
   alias Game.PlayerType.EasyComputerPlayer
+  alias Game.PlayerType.HardComputerPlayer
 
-  @typep player :: HumanPlayer | EasyComputerPlayer
+  @typep player :: HumanPlayer | EasyComputerPlayer | HardComputerPlayer
 
-  @player_types [%{type: HumanPlayer, name: "Human"}, %{type: EasyComputerPlayer, name: "Computer"}]
+  @computer_types [%{type: EasyComputerPlayer, name: "Easy"}, %{type: HardComputerPlayer, name: "Unbeatable"}]
+  @player_types [%{type: HumanPlayer, name: "Human"}, %{type: @computer_types, name: "Computer"}]
   @symbols ["X", "O"]
 
   @spec setup_players(any()) :: Players.t()
@@ -20,11 +22,20 @@ defmodule Game.GameSetup do
     Players.set_players(player_one, player_two)
   end
 
-  @spec select_player_type(String.t()) :: player
-  defp select_player_type(player_selection) do
+  @spec select_player_type(String.t(), list()) :: player
+  defp select_player_type(player_selection, player_types) do
     {selection_number, _selection_decimal} = Integer.parse(player_selection)
-    %{type: player_type} = Enum.at(@player_types, selection_number - 1)
+    %{type: player_type} = Enum.at(player_types, selection_number - 1)
     player_type
+  end
+
+  defp select_difficulty(HumanPlayer, _interface), do: HumanPlayer
+  defp select_difficulty(computer_types, interface) do
+    computer_types
+    |> interface.formatter.format_computer_difficulty_setup()
+    |> interface.communicator.read_input()
+    |> String.trim()
+    |> select_player_type(@computer_types)
   end
 
   @spec create_player(any(), String.t()) :: Player.t()
@@ -33,7 +44,8 @@ defmodule Game.GameSetup do
     |> interface.formatter.format_player_setup(@player_types, @symbols)
     |> interface.communicator.read_input()
     |> String.trim()
-    |> select_player_type()
+    |> select_player_type(@player_types)
+    |> select_difficulty(interface)
     |> Player.create_player(player_symbol)
   end
 end
