@@ -63,13 +63,15 @@ defmodule TicTacToeEndToEndTest do
     end
 
     test "expects a game to be setup with user selected players and played out" do
-      user_input = [input: "1\n2\n1\n3\n5\n7\n"]
+      user_input = [input: "1\n2\n1\n1\n3\n5\n7\n"]
 
       game_play = capture_io(user_input, fn -> IO.write(TicTacToe.start(%CommandLine{})) end)
 
       assert game_play =~ "Please select Player 1 (X) => 1 - Human, 2 - Computer:\s"
 
       assert game_play =~ "Please select Player 2 (O) => 1 - Human, 2 - Computer:\s"
+
+      assert game_play =~ "Please select Difficulty => 1 - Easy, 2 - Unbeatable:\s"
 
       assert game_play =~
         """
