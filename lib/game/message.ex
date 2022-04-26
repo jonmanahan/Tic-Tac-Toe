@@ -23,5 +23,6 @@ defmodule Game.Message do
     end
   end
 
+  @spec invalid_setup_input :: String.t()
   def invalid_setup_input(), do: "Invalid selection, please enter 1 or 2\n"
 end

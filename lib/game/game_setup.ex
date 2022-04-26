@@ -31,6 +31,7 @@ defmodule Game.GameSetup do
     player_type
   end
 
+  @spec select_difficulty(player | list(), any()) :: player
   defp select_difficulty(HumanPlayer, _interface), do: HumanPlayer
   defp select_difficulty(computer_types, interface) do
     computer_type_status = computer_types

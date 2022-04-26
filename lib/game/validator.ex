@@ -23,6 +23,7 @@ defmodule Game.Validator do
     end
   end
 
+  @spec validate_setup(String.t() | integer, list()) :: {:invalid, :invalid_setup} | {:ok, any}
   def validate_setup(player_selection, player_types) when is_binary(player_selection) do
     case Integer.parse(player_selection) do
       {selection_number, _selection_decimal} -> validate_setup(selection_number, player_types)
