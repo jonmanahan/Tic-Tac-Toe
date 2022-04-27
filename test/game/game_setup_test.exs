@@ -90,7 +90,7 @@ defmodule GameSetupTest do
 
       players = GameSetup.setup_players(@mock_command_line)
 
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
         "Invalid selection, please enter 1 or 2\n"
 
       assert players ==

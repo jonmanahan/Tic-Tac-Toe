@@ -10,16 +10,16 @@ defmodule CommunicatorMock do
 
   @impl true
   def display(message) do
-    GenServer.call(CommunicatorMockServer, {:display, message})
+    GenServer.call(__MODULE__, {:display, message})
   end
 
   @impl true
   def read_input(prompt) do
-    GenServer.call(CommunicatorMockServer, {:read_input, prompt})
+    GenServer.call(__MODULE__, {:read_input, prompt})
   end
 
   def start_link(user_inputs) do
-    GenServer.start_link(__MODULE__, {"", user_inputs}, name: CommunicatorMockServer)
+    GenServer.start_link(__MODULE__, {"", user_inputs}, name: __MODULE__)
   end
 
   @impl true
