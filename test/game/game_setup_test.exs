@@ -84,7 +84,7 @@ defmodule GameSetupTest do
         %Players{player_one: %Player{type: HardComputerPlayer, symbol: "X"}, player_two: %Player{type: HardComputerPlayer, symbol: "O"}}
     end
 
-    test "displays invalid setup validation message via invalid input, then returns players containing selected players and associated symbols" do
+    test "displays invalid setup validation message via invalid input for difficulty selection, then returns players containing selected players and associated symbols" do
       user_inputs = ["2", "3", "2", "2", "2"]
       start_supervised!({@mock_command_line.communicator, user_inputs})
 
@@ -95,6 +95,19 @@ defmodule GameSetupTest do
 
       assert players ==
         %Players{player_one: %Player{type: HardComputerPlayer, symbol: "X"}, player_two: %Player{type: HardComputerPlayer, symbol: "O"}}
+    end
+
+    test "displays invalid setup validation message via invalid input for player selection, then returns players containing selected players and associated symbols" do
+      user_inputs = ["3", "1", "1"]
+      start_supervised!({@mock_command_line.communicator, user_inputs})
+
+      players = GameSetup.setup_players(@mock_command_line)
+
+      assert CommunicatorMock.get_message_history() =~
+        "Invalid selection, please enter 1 or 2\n"
+
+      assert players ==
+        %Players{player_one: %Player{type: HumanPlayer, symbol: "X"}, player_two: %Player{type: HumanPlayer, symbol: "O"}}
     end
   end
 end
