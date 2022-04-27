@@ -23,7 +23,7 @@ defmodule TicTacToeTest do
 
       TicTacToe.start(@mock_command_line, board, @human_players)
 
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
         "Player X, please make desired move: #{user_input}"
     end
 
@@ -39,7 +39,7 @@ defmodule TicTacToeTest do
 
       TicTacToe.start(@mock_command_line, board, @human_players)
 
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
         "Player O, please make desired move: #{user_input}"
     end
 
@@ -54,7 +54,7 @@ defmodule TicTacToeTest do
 
       TicTacToe.start(@mock_command_line, board, @human_players)
 
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
         "Player X has Won!"
     end
 
@@ -69,7 +69,7 @@ defmodule TicTacToeTest do
 
       TicTacToe.start(@mock_command_line, board, @human_players)
 
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
         "Player O has Won!"
     end
 
@@ -84,7 +84,7 @@ defmodule TicTacToeTest do
 
       TicTacToe.start(@mock_command_line, board, @human_players)
 
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
         "No player has won, tie!"
     end
 
@@ -99,9 +99,9 @@ defmodule TicTacToeTest do
 
       TicTacToe.start(@mock_command_line, board, @human_players)
 
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
         "Invalid input, please input a number between 1 and 9\n"
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
       """
       X | X | X
       --|---|--
@@ -122,9 +122,9 @@ defmodule TicTacToeTest do
 
       TicTacToe.start(@mock_command_line, board, @human_players)
 
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
         "Invalid input, number out of bounds\n"
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
       """
       X | X | X
       --|---|--
@@ -145,9 +145,9 @@ defmodule TicTacToeTest do
 
       TicTacToe.start(@mock_command_line, board, @human_players)
 
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
         "Invalid input, position has already been taken\n"
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
       """
       X | X | X
       --|---|--
@@ -170,9 +170,9 @@ defmodule TicTacToeTest do
 
       TicTacToe.start(@mock_command_line, board, players)
 
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
         "Player O, please make desired move (Computer): 1"
-      assert :sys.get_state(CommunicatorMockServer) =~
+      assert :sys.get_state(CommunicatorMock) =~
         """
         O | X | X
         --|---|--
