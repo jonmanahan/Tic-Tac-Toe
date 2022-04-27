@@ -33,8 +33,9 @@ defmodule Game.GameSetup do
     |> get_valid_player_type(player_symbol, interface)
   end
 
+  @spec get_valid_player_type({:ok, list() | player} | {:invalid, atom()}, String.t(), any()) :: list() | player
   defp get_valid_player_type({:ok, player_type}, _player_symbol, _interface), do: player_type
-  defp get_valid_player_type({:invalid, _reason}, player_symbol,interface) do
+  defp get_valid_player_type({:invalid, _reason}, player_symbol, interface) do
     interface.communicator.display(Message.invalid_setup_input())
     select_player_type(player_symbol, interface)
   end
@@ -49,6 +50,7 @@ defmodule Game.GameSetup do
     |> get_valid_difficulty(interface)
   end
 
+  @spec get_valid_difficulty({:ok, player} | {:invalid, atom()}, any()) :: player
   defp get_valid_difficulty({:ok, difficulty}, _interface), do: difficulty
   defp get_valid_difficulty({:invalid, _reason}, interface) do
     interface.communicator.display(Message.invalid_setup_input())
