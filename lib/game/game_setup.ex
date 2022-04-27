@@ -24,11 +24,19 @@ defmodule Game.GameSetup do
     Players.set_players(player_one, player_two)
   end
 
-  @spec select_player_type(String.t(), list()) :: player
-  defp select_player_type(player_selection, player_types) do
-    {selection_number, _selection_decimal} = Integer.parse(player_selection)
-    %{type: player_type} = Enum.at(player_types, selection_number - 1)
-    player_type
+  @spec select_player_type(String.t(), any()) :: player
+  defp select_player_type(player_symbol, interface) do
+    player_symbol
+    |> interface.formatter.format_player_setup(@player_types, @symbols)
+    |> interface.communicator.read_input()
+    |> Validator.validate_setup(@player_types)
+    |> get_valid_player_type(player_symbol, interface)
+  end
+
+  defp get_valid_player_type({:ok, player_type}, _player_symbol, _interface), do: player_type
+  defp get_valid_player_type({:invalid, _reason}, player_symbol,interface) do
+    interface.communicator.display(Message.invalid_setup_input())
+    select_player_type(player_symbol, interface)
   end
 
   @spec select_difficulty(player | list(), any()) :: player
@@ -41,7 +49,7 @@ defmodule Game.GameSetup do
     |> get_valid_difficulty(interface)
   end
 
-  defp get_valid_difficulty({:ok, player_type}, _interface), do: player_type
+  defp get_valid_difficulty({:ok, difficulty}, _interface), do: difficulty
   defp get_valid_difficulty({:invalid, _reason}, interface) do
     interface.communicator.display(Message.invalid_setup_input())
     select_difficulty(@computer_types, interface)
@@ -50,9 +58,7 @@ defmodule Game.GameSetup do
   @spec create_player(any(), String.t()) :: Player.t()
   defp create_player(interface, player_symbol) do
     player_symbol
-    |> interface.formatter.format_player_setup(@player_types, @symbols)
-    |> interface.communicator.read_input()
-    |> select_player_type(@player_types)
+    |> select_player_type(interface)
     |> select_difficulty(interface)
     |> Player.create_player(player_symbol)
   end
