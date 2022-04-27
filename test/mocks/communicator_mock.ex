@@ -22,10 +22,19 @@ defmodule CommunicatorMock do
     GenServer.start_link(__MODULE__, {"", user_inputs}, name: __MODULE__)
   end
 
+  def get_message_history() do
+    GenServer.call(__MODULE__, :history)
+  end
+
   @impl true
   def init({full_message, user_inputs}) do
     Process.put(:mock_user_inputs, user_inputs)
     {:ok, full_message}
+  end
+
+  @impl true
+  def handle_call(:history, _from, state) do
+    {:reply, state, state}
   end
 
   @impl true
