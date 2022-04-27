@@ -2,6 +2,7 @@ defmodule ValidatorTest do
   use ExUnit.Case
 
   alias Game.Validator
+  alias Game.PlayerType.HumanPlayer
   alias Game.PlayerType.EasyComputerPlayer
   alias Game.PlayerType.HardComputerPlayer
 
@@ -82,6 +83,24 @@ defmodule ValidatorTest do
       computer_types = [%{type: EasyComputerPlayer, name: "Easy"}, %{type: HardComputerPlayer, name: "Unbeatable"}]
 
       assert Validator.validate_setup(user_input, computer_types) == {:ok, HardComputerPlayer}
+    end
+
+    test "returns an invalid error when the user enters a number other than 1 or 2 during the player selection setup" do
+      user_input = "4"
+
+      computer_types = [%{type: EasyComputerPlayer, name: "Easy"}, %{type: HardComputerPlayer, name: "Unbeatable"}]
+      player_types = [%{type: HumanPlayer, name: "Human"}, %{type: computer_types, name: "Computer"}]
+
+      assert Validator.validate_setup(user_input, player_types) == {:invalid, :invalid_setup}
+    end
+
+    test "returns the users selected human player" do
+      user_input = "1"
+
+      computer_types = [%{type: EasyComputerPlayer, name: "Easy"}, %{type: HardComputerPlayer, name: "Unbeatable"}]
+      player_types = [%{type: HumanPlayer, name: "Human"}, %{type: computer_types, name: "Computer"}]
+
+      assert Validator.validate_setup(user_input, player_types) == {:ok, HumanPlayer}
     end
   end
 end
