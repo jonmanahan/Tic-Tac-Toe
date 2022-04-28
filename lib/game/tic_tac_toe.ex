@@ -12,33 +12,33 @@ defmodule Game.TicTacToe do
   @welcome_message "Welcome to Tic-Tac-Toe"
 
   @spec start(any()) :: nil
-  def start(interface) do
+  def start(user_interface) do
     board = Board.setup_initial_board()
-    players = GameSetup.setup_players(interface)
+    players = GameSetup.setup_players(user_interface)
 
-    welcome = @welcome_message <> "\n" <> interface.formatter.format_board(board)
-    interface.communicator.display(welcome)
+    welcome = @welcome_message <> "\n" <> user_interface.formatter.format_board(board)
+    user_interface.communicator.display(welcome)
 
-    start(interface, board, players)
+    start(user_interface, board, players)
   end
 
-  def start(interface, board, players) do
+  def start(user_interface, board, players) do
     player = Players.get_player(players, Board.calculate_turn(board))
-    case Player.get_move(player, board, interface.communicator) do
+    case Player.get_move(player, board, user_interface.communicator) do
       {:ok, player_move} ->
         board = Board.place_a_symbol(board, player_move, player.symbol)
-        interface.communicator.display(interface.formatter.format_board(board))
+        user_interface.communicator.display(user_interface.formatter.format_board(board))
 
         board
         |> Message.game_status(player.symbol)
-        |> interface.communicator.display()
-        if Board.game_status(board) == :in_progress, do: start(interface, board, players)
+        |> user_interface.communicator.display()
+        if Board.game_status(board) == :in_progress, do: start(user_interface, board, players)
       {:invalid, invalid_input_status} ->
         invalid_input_status
         |> Message.invalid_input()
-        |> interface.communicator.display()
+        |> user_interface.communicator.display()
 
-        start(interface, board, players)
+        start(user_interface, board, players)
     end
   end
 end
