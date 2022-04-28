@@ -4,7 +4,6 @@ defmodule Game.GameSetup do
   """
 
   alias Game.Message
-  alias Game.Validator
   alias Game.Player
   alias Game.Players
   alias Game.PlayerType.HumanPlayer
@@ -24,8 +23,9 @@ defmodule Game.GameSetup do
     Players.set_players(player_one, player_two)
   end
 
-  @spec select_player_type(player | list(), String.t(), any()) :: player | list()
-  defp select_player_type(player_types, prompt, user_interface) do
+  @spec select_type(player | list(), String.t(), any()) :: player | list()
+  defp select_type(HumanPlayer, _prompt, _user_interface), do: HumanPlayer
+  defp select_type(player_types, prompt, user_interface) do
     selection = player_types
     |> user_interface.formatter.format_setup_prompt(prompt)
     |> user_interface.communicator.read_input()
@@ -33,7 +33,7 @@ defmodule Game.GameSetup do
     |> get_type_selection(player_types)
 
     case selection do
-      nil -> select_player_type(player_types, Message.invalid_setup_input(), user_interface)
+      nil -> select_type(player_types, Message.invalid_setup_input(), user_interface)
       %{type: type} -> type
     end
   end
@@ -48,30 +48,13 @@ defmodule Game.GameSetup do
     end
   end
 
-  @spec select_difficulty(player | list(), String.t(), any()) :: player
-  defp select_difficulty(HumanPlayer, _prompt, _user_interface), do: HumanPlayer
-  defp select_difficulty(computer_types, prompt, user_interface) do
-    computer_types
-    |> user_interface.formatter.format_setup_prompt(prompt)
-    |> user_interface.communicator.read_input()
-    |> Validator.validate_setup(@computer_types)
-    |> get_valid_difficulty(prompt, user_interface)
-  end
-
-  @spec get_valid_difficulty({:ok, player} | {:invalid, atom()}, String.t(), any()) :: player
-  defp get_valid_difficulty({:ok, difficulty}, _prompt, _user_interface), do: difficulty
-  defp get_valid_difficulty({:invalid, _reason}, prompt, user_interface) do
-    user_interface.communicator.display(Message.invalid_setup_input())
-    select_difficulty(@computer_types, prompt, user_interface)
-  end
-
   @spec create_player(any(), tuple()) :: Player.t()
   defp create_player(user_interface, {player_number, player_symbol}) do
     player_select_prompt = "Please select Player #{player_number} (#{player_symbol}) => "
     difficulty_select_prompt = "Please select Difficulty => "
     @player_types
-    |> select_player_type(player_select_prompt, user_interface)
-    |> select_difficulty(difficulty_select_prompt, user_interface)
+    |> select_type(player_select_prompt, user_interface)
+    |> select_type(difficulty_select_prompt, user_interface)
     |> Player.create_player(player_symbol)
   end
 end
