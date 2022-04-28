@@ -10,10 +10,11 @@ defmodule GameSetupTest do
   alias Communication.CommandLine
 
   @mock_command_line %CommandLine{communicator: CommunicatorMock}
+  @input %TestHelper{}
 
   describe "setup_players/1" do
     test "returns players containing a Human player 1 and Human player 2 with their associated symbols" do
-      user_inputs = ["1", "1"]
+      user_inputs = [@input.human_player, @input.human_player]
       start_supervised!({@mock_command_line.communicator, user_inputs})
 
       assert GameSetup.setup_players(@mock_command_line) ==
@@ -24,7 +25,7 @@ defmodule GameSetupTest do
     end
 
     test "returns players containing a Human player 1 and an Easy Computer player 2 with their associated symbols" do
-      user_inputs = ["1", "2", "1"]
+      user_inputs = [@input.human_player, @input.computer_player, @input.easy_mode_computer]
       start_supervised!({@mock_command_line.communicator, user_inputs})
 
       assert GameSetup.setup_players(@mock_command_line) ==
@@ -35,7 +36,7 @@ defmodule GameSetupTest do
     end
 
     test "returns players containing a Human player 1 and an Unbeatable Computer player 2 with their associated symbols" do
-      user_inputs = ["1", "2", "2"]
+      user_inputs = [@input.human_player, @input.computer_player, @input.hard_mode_computer]
       start_supervised!({@mock_command_line.communicator, user_inputs})
 
       assert GameSetup.setup_players(@mock_command_line) ==
@@ -46,7 +47,7 @@ defmodule GameSetupTest do
     end
 
     test "returns players containing an Easy Computer player 1 and Human player 2 with their associated symbols" do
-      user_inputs = ["2", "1", "1"]
+      user_inputs = [@input.computer_player, @input.easy_mode_computer, @input.human_player]
       start_supervised!({@mock_command_line.communicator, user_inputs})
 
       assert GameSetup.setup_players(@mock_command_line) ==
@@ -57,7 +58,7 @@ defmodule GameSetupTest do
     end
 
     test "returns players containing an Unbeatable Computer player 1 and Human player 2 with their associated symbols" do
-      user_inputs = ["2", "2", "1"]
+      user_inputs = [@input.computer_player, @input.hard_mode_computer, @input.human_player]
       start_supervised!({@mock_command_line.communicator, user_inputs})
 
       assert GameSetup.setup_players(@mock_command_line) ==
@@ -68,7 +69,7 @@ defmodule GameSetupTest do
     end
 
     test "returns players containing an Easy Computer player 1 and an Easy Computer player 2 with their associated symbols" do
-      user_inputs = ["2", "1", "2", "1"]
+      user_inputs = [@input.computer_player, @input.easy_mode_computer, @input.computer_player, @input.easy_mode_computer]
       start_supervised!({@mock_command_line.communicator, user_inputs})
 
       assert GameSetup.setup_players(@mock_command_line) ==
@@ -79,7 +80,7 @@ defmodule GameSetupTest do
     end
 
     test "returns players containing an Easy Computer player 1 and an Unbeatable Computer player 2 with their associated symbols" do
-      user_inputs = ["2", "1", "2", "2"]
+      user_inputs = [@input.computer_player, @input.easy_mode_computer, @input.computer_player, @input.hard_mode_computer]
       start_supervised!({@mock_command_line.communicator, user_inputs})
 
       assert GameSetup.setup_players(@mock_command_line) ==
@@ -90,7 +91,7 @@ defmodule GameSetupTest do
     end
 
     test "returns players containing an Unbeatable Computer player 1 and an Easy Computer player 2 with their associated symbols" do
-      user_inputs = ["2", "2", "2", "1"]
+      user_inputs = [@input.computer_player, @input.hard_mode_computer, @input.computer_player, @input.easy_mode_computer]
       start_supervised!({@mock_command_line.communicator, user_inputs})
 
       assert GameSetup.setup_players(@mock_command_line) ==
@@ -101,7 +102,7 @@ defmodule GameSetupTest do
     end
 
     test "returns players containing an Unbeatable Computer player 1 and an Unbeatable Computer player 2 with their associated symbols" do
-      user_inputs = ["2", "2", "2", "2"]
+      user_inputs = [@input.computer_player, @input.hard_mode_computer, @input.computer_player, @input.hard_mode_computer]
       start_supervised!({@mock_command_line.communicator, user_inputs})
 
       assert GameSetup.setup_players(@mock_command_line) ==
@@ -112,7 +113,7 @@ defmodule GameSetupTest do
     end
 
     test "displays invalid setup validation message via invalid input for difficulty selection, then returns players containing selected players and associated symbols" do
-      user_inputs = ["2", "3", "2", "2", "2"]
+      user_inputs = [@input.computer_player, @input.invalid_input, @input.hard_mode_computer, @input.computer_player, @input.hard_mode_computer]
       start_supervised!({@mock_command_line.communicator, user_inputs})
 
       players = GameSetup.setup_players(@mock_command_line)
@@ -128,7 +129,7 @@ defmodule GameSetupTest do
     end
 
     test "displays invalid setup validation message via invalid input for player selection, then returns players containing selected players and associated symbols" do
-      user_inputs = ["3", "1", "1"]
+      user_inputs = [@input.invalid_input, @input.human_player, @input.human_player]
       start_supervised!({@mock_command_line.communicator, user_inputs})
 
       players = GameSetup.setup_players(@mock_command_line)
