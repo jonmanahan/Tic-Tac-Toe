@@ -19,33 +19,14 @@ defmodule Communication.CommandLine.CommandLineFormatter do
     |> Enum.join()
   end
 
-  @spec format_player_setup(String.t(), list(), list()) :: String.t()
-  def format_player_setup(player_symbol, player_types, symbols) do
-    player_number = get_player_number_by_symbol(player_symbol, symbols)
-
+  @spec format_setup_prompt(list(), String.t()) :: String.t()
+  def format_setup_prompt(player_types, prompt) do
     player_types
-    |> format_player_selections_with_numbers()
-    |> List.insert_at(0, "Please select Player #{player_number} (#{player_symbol}) => ")
-    |> Enum.join()
-  end
-
-  def format_computer_difficulty_setup(computer_difficulties) do
-    computer_difficulties
-    |> format_player_selections_with_numbers()
-    |> List.insert_at(0, "Please select Difficulty => ")
-    |> Enum.join()
-  end
-
-  defp format_player_selections_with_numbers(selections) do
-    selections
     |> Enum.with_index(fn selection, index -> {"#{index + 1}", selection} end)
     |> Enum.map_intersperse(", ", fn {selection_number, %{name: selection_name}} -> "#{selection_number} - #{selection_name}" end)
     |> List.insert_at(-1, ": ")
-  end
-
-  @spec get_player_number_by_symbol(String.t(), list()) :: non_neg_integer()
-  defp get_player_number_by_symbol(player_symbol, symbols) do
-    Enum.find_index(symbols, fn symbol -> symbol == player_symbol end) + 1
+    |> List.insert_at(0, prompt)
+    |> Enum.join()
   end
 
   defp format_position({board_position, :empty}) do
