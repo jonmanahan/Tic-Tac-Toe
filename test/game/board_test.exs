@@ -231,7 +231,7 @@ defmodule BoardTest do
   end
 
   describe "available_spaces/1" do
-    test "" do
+    test "returns the available spaces given a board" do
       board = %{
         1 => "O", 2 => :empty, 3 => "O",
         4 => "X", 5 => :empty, 6 => "X",
