@@ -18,50 +18,50 @@ defmodule Game.GameSetup do
   @symbols ["X", "O"]
 
   @spec setup_players(any()) :: Players.t()
-  def setup_players(interface) do
-    [player_one, player_two] = Enum.map(@symbols, &(create_player(interface, &1)))
+  def setup_players(user_interface) do
+    [player_one, player_two] = Enum.map(@symbols, &(create_player(user_interface, &1)))
 
     Players.set_players(player_one, player_two)
   end
 
   @spec select_player_type(String.t(), any()) :: player
-  defp select_player_type(player_symbol, interface) do
+  defp select_player_type(player_symbol, user_interface) do
     player_symbol
-    |> interface.formatter.format_player_setup(@player_types, @symbols)
-    |> interface.communicator.read_input()
+    |> user_interface.formatter.format_player_setup(@player_types, @symbols)
+    |> user_interface.communicator.read_input()
     |> Validator.validate_setup(@player_types)
-    |> get_valid_player_type(player_symbol, interface)
+    |> get_valid_player_type(player_symbol, user_interface)
   end
 
   @spec get_valid_player_type({:ok, list() | player} | {:invalid, atom()}, String.t(), any()) :: list() | player
-  defp get_valid_player_type({:ok, player_type}, _player_symbol, _interface), do: player_type
-  defp get_valid_player_type({:invalid, _reason}, player_symbol, interface) do
-    interface.communicator.display(Message.invalid_setup_input())
-    select_player_type(player_symbol, interface)
+  defp get_valid_player_type({:ok, player_type}, _player_symbol, _user_interface), do: player_type
+  defp get_valid_player_type({:invalid, _reason}, player_symbol, user_interface) do
+    user_interface.communicator.display(Message.invalid_setup_input())
+    select_player_type(player_symbol, user_interface)
   end
 
   @spec select_difficulty(player | list(), any()) :: player
-  defp select_difficulty(HumanPlayer, _interface), do: HumanPlayer
-  defp select_difficulty(computer_types, interface) do
+  defp select_difficulty(HumanPlayer, _user_interface), do: HumanPlayer
+  defp select_difficulty(computer_types, user_interface) do
     computer_types
-    |> interface.formatter.format_computer_difficulty_setup()
-    |> interface.communicator.read_input()
+    |> user_interface.formatter.format_computer_difficulty_setup()
+    |> user_interface.communicator.read_input()
     |> Validator.validate_setup(@computer_types)
-    |> get_valid_difficulty(interface)
+    |> get_valid_difficulty(user_interface)
   end
 
   @spec get_valid_difficulty({:ok, player} | {:invalid, atom()}, any()) :: player
-  defp get_valid_difficulty({:ok, difficulty}, _interface), do: difficulty
-  defp get_valid_difficulty({:invalid, _reason}, interface) do
-    interface.communicator.display(Message.invalid_setup_input())
-    select_difficulty(@computer_types, interface)
+  defp get_valid_difficulty({:ok, difficulty}, _user_interface), do: difficulty
+  defp get_valid_difficulty({:invalid, _reason}, user_interface) do
+    user_interface.communicator.display(Message.invalid_setup_input())
+    select_difficulty(@computer_types, user_interface)
   end
 
   @spec create_player(any(), String.t()) :: Player.t()
-  defp create_player(interface, player_symbol) do
+  defp create_player(user_interface, player_symbol) do
     player_symbol
-    |> select_player_type(interface)
-    |> select_difficulty(interface)
+    |> select_player_type(user_interface)
+    |> select_difficulty(user_interface)
     |> Player.create_player(player_symbol)
   end
 end
