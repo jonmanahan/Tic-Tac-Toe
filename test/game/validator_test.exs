@@ -72,7 +72,10 @@ defmodule ValidatorTest do
     test "returns an invalid error when the user enters a number other than 1 or 2 during the difficulty selection setup" do
       user_input = "4"
 
-      computer_types = [%{type: EasyComputerPlayer, name: "Easy"}, %{type: HardComputerPlayer, name: "Unbeatable"}]
+      computer_types = [
+        %{type: EasyComputerPlayer, name: "Easy"},
+        %{type: HardComputerPlayer, name: "Unbeatable"}
+      ]
 
       assert Validator.validate_setup(user_input, computer_types) == {:invalid, :invalid_setup}
     end
@@ -80,7 +83,10 @@ defmodule ValidatorTest do
     test "returns the users selected difficulty" do
       user_input = "2"
 
-      computer_types = [%{type: EasyComputerPlayer, name: "Easy"}, %{type: HardComputerPlayer, name: "Unbeatable"}]
+      computer_types = [
+        %{type: EasyComputerPlayer, name: "Easy"},
+        %{type: HardComputerPlayer, name: "Unbeatable"}
+      ]
 
       assert Validator.validate_setup(user_input, computer_types) == {:ok, HardComputerPlayer}
     end
@@ -88,8 +94,14 @@ defmodule ValidatorTest do
     test "returns an invalid error when the user enters a number other than 1 or 2 during the player selection setup" do
       user_input = "4"
 
-      computer_types = [%{type: EasyComputerPlayer, name: "Easy"}, %{type: HardComputerPlayer, name: "Unbeatable"}]
-      player_types = [%{type: HumanPlayer, name: "Human"}, %{type: computer_types, name: "Computer"}]
+      computer_types = [
+        %{type: EasyComputerPlayer, name: "Easy"},
+        %{type: HardComputerPlayer, name: "Unbeatable"}
+      ]
+      player_types = [
+        %{type: HumanPlayer, name: "Human"},
+        %{type: computer_types, name: "Computer"}
+      ]
 
       assert Validator.validate_setup(user_input, player_types) == {:invalid, :invalid_setup}
     end
@@ -97,8 +109,14 @@ defmodule ValidatorTest do
     test "returns the users selected human player" do
       user_input = "1"
 
-      computer_types = [%{type: EasyComputerPlayer, name: "Easy"}, %{type: HardComputerPlayer, name: "Unbeatable"}]
-      player_types = [%{type: HumanPlayer, name: "Human"}, %{type: computer_types, name: "Computer"}]
+      computer_types = [
+        %{type: EasyComputerPlayer, name: "Easy"},
+        %{type: HardComputerPlayer, name: "Unbeatable"}
+      ]
+      player_types = [
+        %{type: HumanPlayer, name: "Human"},
+        %{type: computer_types, name: "Computer"}
+      ]
 
       assert Validator.validate_setup(user_input, player_types) == {:ok, HumanPlayer}
     end

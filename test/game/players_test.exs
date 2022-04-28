@@ -12,7 +12,10 @@ defmodule PlayersTest do
       player_two = %Player{type: EasyComputerPlayer, symbol: "O"}
 
       assert Players.set_players(player_one, player_two) ==
-        %Players{player_one: %Player{type: HumanPlayer, symbol: "X"}, player_two: %Player{type: EasyComputerPlayer, symbol: "O"}}
+        %Players{
+          player_one: %Player{type: HumanPlayer, symbol: "X"},
+          player_two: %Player{type: EasyComputerPlayer, symbol: "O"}
+        }
     end
   end
 
