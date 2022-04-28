@@ -49,7 +49,10 @@ defmodule CommandLineFormatterTest do
   describe "format_player_setup/3" do
     test "returns the Player 1 prompt for the symbol X" do
       symbols = ["X", "O"]
-      player_types = [%{type: HumanPlayer, name: "Human"}, %{type: EasyComputerPlayer, name: "Computer"}]
+      player_types = [
+        %{type: HumanPlayer, name: "Human"},
+        %{type: EasyComputerPlayer, name: "Computer"}
+      ]
 
       assert CommandLineFormatter.format_player_setup("X", player_types, symbols) ==
       "Please select Player 1 (X) => 1 - Human, 2 - Computer: "
@@ -57,7 +60,10 @@ defmodule CommandLineFormatterTest do
 
     test "returns the Player 2 prompt for the symbol O" do
       symbols = ["X", "O"]
-      player_types = [%{type: HumanPlayer, name: "Human"}, %{type: EasyComputerPlayer, name: "Computer"}]
+      player_types = [
+        %{type: HumanPlayer, name: "Human"},
+        %{type: EasyComputerPlayer, name: "Computer"}
+      ]
 
       assert CommandLineFormatter.format_player_setup("O", player_types, symbols) ==
       "Please select Player 2 (O) => 1 - Human, 2 - Computer: "
@@ -66,7 +72,10 @@ defmodule CommandLineFormatterTest do
 
   describe "format_computer_difficulty_setup/3" do
     test "returns the select difficulty prompt for the computer difficulty selection" do
-      computer_difficulties = [%{type: EasyComputerPlayer, name: "Easy"}, %{type: HardComputerPlayer, name: "Unbeatable"}]
+      computer_difficulties = [
+        %{type: EasyComputerPlayer, name: "Easy"},
+        %{type: HardComputerPlayer, name: "Unbeatable"}
+      ]
 
       assert CommandLineFormatter.format_computer_difficulty_setup(computer_difficulties) ==
       "Please select Difficulty => 1 - Easy, 2 - Unbeatable: "
