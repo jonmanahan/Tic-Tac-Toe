@@ -22,19 +22,4 @@ defmodule Game.Validator do
       :valid -> {:ok, player_move}
     end
   end
-
-  @spec validate_setup(String.t() | integer, list()) :: {:invalid, :invalid_setup} | {:ok, any}
-  def validate_setup(player_selection, player_types) when is_binary(player_selection) do
-    case Integer.parse(player_selection) do
-      {selection_number, _selection_decimal} -> validate_setup(selection_number, player_types)
-      :error -> {:invalid, :invalid_setup}
-    end
-  end
-
-  def validate_setup(selection_number, player_types) do
-    case Enum.at(player_types, selection_number - 1) do
-      %{type: player_type} -> {:ok, player_type}
-      nil -> {:invalid, :invalid_setup}
-    end
-  end
 end
