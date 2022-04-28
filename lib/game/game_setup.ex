@@ -24,20 +24,28 @@ defmodule Game.GameSetup do
     Players.set_players(player_one, player_two)
   end
 
-  @spec select_player_type(list(), String.t(), any()) :: player
+  @spec select_player_type(player | list(), String.t(), any()) :: player | list()
   defp select_player_type(player_types, prompt, user_interface) do
-    player_types
+    selection = player_types
     |> user_interface.formatter.format_setup_prompt(prompt)
     |> user_interface.communicator.read_input()
-    |> Validator.validate_setup(@player_types)
-    |> get_valid_player_type(prompt, user_interface)
+    |> Integer.parse()
+    |> get_type_selection(player_types)
+
+    case selection do
+      nil -> select_player_type(player_types, Message.invalid_setup_input(), user_interface)
+      %{type: type} -> type
+    end
   end
 
-  @spec get_valid_player_type({:ok, list() | player} | {:invalid, atom()}, String.t(), any()) :: list() | player
-  defp get_valid_player_type({:ok, player_type}, _prompt, _user_interface), do: player_type
-  defp get_valid_player_type({:invalid, _reason}, prompt, user_interface) do
-    user_interface.communicator.display(Message.invalid_setup_input())
-    select_player_type(@player_types, prompt, user_interface)
+  @spec get_type_selection(:error | {integer(), String.t()}, list() | player) :: list() | Player.t() | nil
+  defp get_type_selection(:error, _), do: nil
+  defp get_type_selection({selection, _}, types) do
+    if selection < 1 do
+      nil
+    else
+      Enum.at(types, selection - 1)
+    end
   end
 
   @spec select_difficulty(player | list(), String.t(), any()) :: player

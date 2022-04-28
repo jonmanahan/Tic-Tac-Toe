@@ -4,9 +4,11 @@ defmodule Game.Player do
   """
   alias __MODULE__
   alias Game.PlayerType.HumanPlayer
+  alias Game.PlayerType.EasyComputerPlayer
+  alias Game.PlayerType.HardComputerPlayer
 
   @type t :: %__MODULE__{}
-  @typep player_type :: HumanPlayer | EasyComputerPlayer
+  @typep player_type :: HumanPlayer | EasyComputerPlayer | HardComputerPlayer
 
   defstruct type: HumanPlayer, symbol: ""
 
