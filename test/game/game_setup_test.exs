@@ -10,7 +10,7 @@ defmodule GameSetupTest do
   alias Communication.CommandLine
 
   @mock_command_line %CommandLine{communicator: CommunicatorMock}
-  @input %TestHelper{}
+  @input %PlayerSetupTestHelper{}
 
   describe "setup_players/1" do
     test "returns players containing a Human player 1 and Human player 2 with their associated symbols" do
