@@ -1,4 +1,4 @@
-defmodule TestHelper do
+defmodule PlayerSetupTestHelper do
   @moduledoc """
   The module that descriptively defines the player selection and difficulty selection inputs
   """
